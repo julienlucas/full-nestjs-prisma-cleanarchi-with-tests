@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
@@ -9,16 +10,20 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
+  id        String @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+  email     String @unique
   password  String
-  Trainings Training[]
+  trainings Training[]
 }
 
 model Training {
-  id          Int    @id @default(autoincrement())
+  id          String @id @default(uuid()) @db.Uuid
   title       String
   description String
-  createdAt   DateTime @default(now())
-  user        User  @relation(fields: [id], references: [id])
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime @updatedAt @db.Timestamp(6)
+  author      User? @relation(fields: [authorId], references: [id])
+  authorId    String @db.Uuid
 }

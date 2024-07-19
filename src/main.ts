@@ -1,24 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ValidationPipe, Logger } from '@nestjs/common';
-import { TransformInterceptor } from './infrastructure/common/transform.interceptor';
+import { AppModule } from './app.module';
+import { TransformInterceptor } from '@infrastructure/common/transform.interceptor';
 
 async function bootstrap() {
   const logger = new Logger();
-  const app = await NestFactory.create(AppModule);
-    const options = new DocumentBuilder()
+  const port = process.env.PORT;
+
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule, new FastifyAdapter()
+  );
+  const options = new DocumentBuilder()
     .setTitle('E-learning courses API')
-    .setDescription('Nest.js API')
+    .setDescription('Nestjs API')
     .setVersion('1.0')
-    .addServer('http://localhost:3000/', 'Local environment')
+    .addServer(`http://localhost:${port}`, 'Local environment')
     // .addServer('https://staging.yourapi.com/', 'Staging')
     // .addServer('https://production.yourapi.com/', 'Production')
     .addTag('Your API Tag')
     .build();
+
   const document = SwaggerModule.createDocument(app, options);
-  // const port = process.env.PORT;
-  const port = 3000;
   SwaggerModule.setup('api-docs', app, document);
 
   app.enableCors();

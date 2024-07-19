@@ -1,6 +1,7 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from "@infrastructure/prisma/prisma.service";
 import { AuthCrendentialsDto } from '@infrastructure/repositories/users/users.dto';
+import { User } from '@domain/models/user.interface';
 import { Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
@@ -10,7 +11,7 @@ export class UsersRepository {
 
   constructor(private prisma: PrismaService) {}
 
-  async signIn(authCrendentialsDto: AuthCrendentialsDto): Promise<AuthCrendentialsDto> {
+  async signIn(authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
     try {
       const user = await this.prisma.user.findUnique({ where: { email: authCrendentialsDto.email } })
 
@@ -21,7 +22,7 @@ export class UsersRepository {
     }
   }
 
-  async createUser(authCrendentialsDto: AuthCrendentialsDto): Promise<void> {
+  async createUser(authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
     const { email, password } = authCrendentialsDto;
 
     const salt = await bcrypt.genSalt();
@@ -31,12 +32,14 @@ export class UsersRepository {
     console.log('hashedPassword', hashedPassword);
 
     try {
-      await this.prisma.user.create({
+      const result = await this.prisma.user.create({
         data: {
           email,
           password: hashedPassword
         }
       })
+
+      return result
     } catch(error) {
       if (error.code === 'P2002') {
         throw new ConflictException('Username already exists');

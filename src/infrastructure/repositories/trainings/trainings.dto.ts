@@ -1,14 +1,20 @@
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class TrainingDto {
-  @IsNotEmpty()
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
   title: string;
 
-  @IsNotEmpty()
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
   description: string;
 }
 
 export class GetTrainingsFilterDto {
+  @ApiProperty()
   @IsOptional()
   @IsString()
   search: string;

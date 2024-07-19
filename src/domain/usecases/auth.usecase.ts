@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersRepository } from '@infrastructure/repositories/users/users.repository';
 import { AuthCrendentialsDto } from '@infrastructure/repositories/users/users.dto';
+import { User } from '@domain/models/user.interface';
 
 @Injectable()
 export class AuthUsecase {
@@ -13,10 +14,10 @@ export class AuthUsecase {
     private readonly jwtService: JwtService
   ) {}
 
-  async signUp(authCrendentialsDto: AuthCrendentialsDto): Promise<void> {
+  async signUp(authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
     const result = await this.usersRepository.createUser(authCrendentialsDto);
 
-    this.logger.verbose('authUsecases execute', `User created successfully`);
+    this.logger.verbose('signUpUsecase', `User created successfully`);
     return result;
   }
 
@@ -28,8 +29,8 @@ export class AuthUsecase {
       const payload = { email };
       const accessToken: string = await this.jwtService.sign(payload);
 
-      this.logger.verbose('authUsecases execute', accessToken);
-      this.logger.verbose('authUsecases execute', `User signin successfully`);
+      this.logger.verbose('signInUsecase', accessToken);
+      this.logger.verbose('signInUsecase', `User signin successfully`);
 
       return { accessToken };
     } else {

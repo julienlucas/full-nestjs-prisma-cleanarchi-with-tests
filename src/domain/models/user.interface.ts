@@ -1,27 +1,13 @@
-import { Training } from '@domain/models/training.interface';
-import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User as UserEntity } from '@prisma/client';
 
-@Entity()
-export class User {
-  @ApiProperty()
-  @PrimaryGeneratedColumn('uuid')
-  id: number;
-
-  @ApiProperty()
-  @Column({ unique: true })
+export class User implements UserEntity {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
   email: string;
-
-  @ApiProperty()
-  @Column()
   password: string;
-
-  // @ApiProperty()
-  // @OneToMany(_type => Training, training => training.user, { eager: true })
-  // trainings: Training[];
 }
 
 export class BearerToken {
-  @ApiProperty()
   token: string;
 }

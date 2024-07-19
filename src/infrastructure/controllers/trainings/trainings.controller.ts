@@ -6,12 +6,13 @@ import { ApiResponseType } from '@infrastructure/common/swagger.decorator';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 import { TrainingDto, GetTrainingsFilterDto } from '@infrastructure/repositories/trainings/trainings.dto';
 import { Training } from '@domain/models/training.interface';
+import { TrainingPresenter } from '@infrastructure/presenters/training.presenter';
 import { User } from '@domain/models/user.interface';
 
 @Controller('trainings')
 @ApiTags('TrainingsController')
 @ApiResponse({ status: 500, description: 'Internal error' })
-@ApiExtraModels(Training)
+@ApiExtraModels(TrainingPresenter)
 @UseGuards(AuthGuard())
 export class TrainingsController {
   constructor(
@@ -27,12 +28,14 @@ export class TrainingsController {
     type: User,
     description: 'user',
   })
-  @ApiResponseType(Training, true)
-  getTasks(
+  @ApiResponseType(TrainingPresenter, true)
+  async getTrainings(
     @Query() filterDto: GetTrainingsFilterDto,
     @GetUser() user: User
   ): Promise<Training[]> {
-    return this.TrainingsUsecase.getTasks(filterDto, user);
+    const trainings = await this.TrainingsUsecase.getTrainings(filterDto, user);
+
+    return trainings.map((training) => new TrainingPresenter(training));
   }
 
   @Get('/:id')
@@ -40,13 +43,14 @@ export class TrainingsController {
     type: User,
     description: 'user',
   })
-  @ApiResponseType(Training, true)
-  getTaskById(
+  @ApiResponseType(TrainingPresenter, true)
+  async getTrainingById(
     @Param('id') id: string,
     @GetUser() user: User
-  // ): Promise<Task> {
-  ) {
-    return this.TrainingsUsecase.getTaskById(id, user);
+  ): Promise<Training> {
+    const training = await this.TrainingsUsecase.getTrainingById(id, user);
+
+    return new TrainingPresenter(training);
   }
 
   @Post()
@@ -55,15 +59,17 @@ export class TrainingsController {
     description: 'Json structure for user object',
   })
   @ApiBody({
-    type: User,
-    description: 'user',
+    type: TrainingDto,
+    description: 'Json structure for training object',
   })
-  @ApiResponseType(Training, true)
-  createTraining(
+  @ApiResponseType(TrainingPresenter, true)
+  async createTraining(
     @Body() training: TrainingDto,
     @GetUser() user: User,
   ): Promise<Training> {
-    return this.TrainingsUsecase.createTraining(training, user);
+    const createdTraining = await this.TrainingsUsecase.createTraining(training, user);
+
+    return new TrainingPresenter(createdTraining);
   }
 
   @Delete('/:id')
@@ -71,27 +77,33 @@ export class TrainingsController {
     type: User,
     description: 'user',
   })
-  @ApiResponseType(Training, true)
-  deleteTask(
+  @ApiResponseType(TrainingPresenter, true)
+  async deleteTraining(
     @Param('id') id: string,
     @GetUser() user: User,
-  ): Promise<void> {
-    return this.TrainingsUsecase.deleteTask(id, user);
+  ): Promise<Training> {
+    const training = await this.TrainingsUsecase.deleteTraining(id, user);
+
+    return new TrainingPresenter(training);
   }
 
-  // @Patch('/:id/status')
-  // @ApiBody({
-  //   type: User,
-  //   description: 'user',
-  // })
-  // @ApiResponseType(Training, true)
-  // updateTaskStatus(
-  //   @Param('id') id: string,
-  //   @GetUser() user: User,
-  //   @Body() updateTaskStatusDto: UpdateTrainingStatusDto
-  // // ): Promise<Task> {
-  // ) {
-  //   const { status } = updateTaskStatusDto;
-  //   return this.TrainingsUsecase.updateTaskStatus(id, status, user);
-  // }
+  @Patch('/:id/update')
+  @ApiBody({
+    type: User,
+    description: 'user',
+  })
+  @ApiBody({
+    type: TrainingDto,
+    description: 'Json structure for training object',
+  })
+  @ApiResponseType(TrainingPresenter, true)
+  async updateTraining(
+    @Param('id') trainingId: string,
+    @GetUser() user: User,
+    @Body() training: TrainingDto
+  ): Promise<Training> {
+    const updatedTraining = await this.TrainingsUsecase.updateTraining(training, trainingId, user);
+
+    return new TrainingPresenter(updatedTraining);
+  }
 }

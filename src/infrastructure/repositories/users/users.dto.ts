@@ -2,12 +2,12 @@ import { MaxLength, MinLength, IsString, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthCrendentialsDto {
-  @ApiProperty()
+  @ApiProperty({ required: true })
   @IsString()
   @MinLength(6)
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: true })
   @IsString()
   @MinLength(8)
   @MaxLength(32)

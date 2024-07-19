@@ -1,8 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
-import { TasksRepository } from '@infrastructure/repositories/tasks.repository';
-import { TasksUsecase } from '@domain/usecases/tasks/tasks.usecase';
-import { TaskStatus } from '@domain/models/task.interface';
+import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
+import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 
 const mockTasksRepository = () => ({
   getTasks: jest.fn(),
@@ -13,23 +12,23 @@ const mockUser = {
   id: 424232244,
   username: 'Test user',
   password: 'Test password',
-  tasks: []
+  trainings: []
 };
 
 describe('TasksUsecase', () => {
-  let TasksUsecase: TasksUsecase;
+  let TasksUsecase: TrainingsUsecase;
   let tasksRepository;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
-        TasksUsecase,
-        { provide: TasksRepository, useFactory: mockTasksRepository },
+        TrainingsUsecase,
+        { provide: TrainingsRepository, useFactory: mockTasksRepository },
       ],
     }).compile();
 
-    TasksUsecase = module.get(TasksUsecase);
-    tasksRepository = module.get(TasksRepository);
+    TasksUsecase = module.get(TrainingsUsecase);
+    tasksRepository = module.get(TrainingsRepository);
   });
 
   describe('getTasks', () => {
@@ -45,8 +44,7 @@ describe('TasksUsecase', () => {
       const mockTask = {
         title: 'Test task',
         description: 'Test desc',
-        id: '24FS',
-        status: TaskStatus.OPEN,
+        id: '24FS'
       };
 
       tasksRepository.findOne.mockResolvedValue(mockTask);

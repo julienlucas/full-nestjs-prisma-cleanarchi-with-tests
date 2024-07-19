@@ -1,10 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { TrainingDto, GetTrainingsFilterDto } from '@infrastructure/repositories/trainings/trainings.dto';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import { Training } from '@domain/models/training.interface';
 import { User } from '@domain/models/user.interface';
 import { Logger } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class TrainingsRepository {
@@ -17,24 +16,24 @@ export class TrainingsRepository {
   async getTrainings(filterDto: GetTrainingsFilterDto, user: User): Promise<Training[]> {
     const { search } = filterDto;
 
-    // const query = this.createQueryBuilder('task');
-    // query.where({ user });
-
-    // if (status) {
-    //   query.andWhere('task.status = :status', { status });
-    // }
-
-    // if (search) {
-    //   query.andWhere(
-    //     '(LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search))',
-    //     { search: `%${search}%` },
-    //   );
-    // }
-
     try {
-      const trainings = await this.prisma.user.findUnique({ where: { email: user.email } })
+      const trainings = await this.prisma.training.findMany({
+        where: {
+          OR: [
+            {
+              authorId: user.id,
+              title: { contains: search || '' }
+            },
+            {
+              authorId: user.id,
+              description: { contains: search || '' }
+            },
+          ]
+        },
+        orderBy: { createdAt: 'desc' }
+      })
 
-      return trainings as any;
+      return trainings;
     } catch (error) {
       this.logger.error(`Failed to get tasks for user "${user.email}". Filters: ${JSON.stringify(filterDto)}`, error.stack);
       throw new InternalServerErrorException();
@@ -44,23 +43,75 @@ export class TrainingsRepository {
   async createTraining(training: TrainingDto, user: User): Promise<Training> {
     const { title, description } = training;
 
-    const createdTraining = await this.prisma.training.create({
-      data: {
-        title,
-        description,
-        createdAt: new Date()
-        // user: {
-        //   connect: {
-        //     id: user.id
-        //   }
-        // }
-      }
-    })
+    try {
+      const createdTraining = await this.prisma.training.create({
+        data: {
+          title,
+          description,
+          authorId: user.id
+        }
+      })
 
-    return createdTraining;
+      return createdTraining;
+    } catch (error) {
+      this.logger.error(`Failed to create training for user "${user.email}"`, error.stack);
+      throw new InternalServerErrorException();
+    }
   }
 
-  async deleteTask(id: string, user: User): Promise<void> {
-    // await this.delete({ id, user });
+  async updateTraining(training: TrainingDto, trainingId: string, user: User): Promise<Training> {
+    const { title, description } = training;
+
+    try {
+      const updatedTraining = await this.prisma.training.update({
+        where: {
+          id: trainingId
+        },
+        data: {
+          title,
+          description,
+        }
+      })
+
+      return updatedTraining;
+    } catch (error) {
+      this.logger.error(`Failed to update training for user "${user.email}"`, error.stack);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getTrainingById(trainingId: string): Promise<Training> {
+    try {
+      const training = await this.prisma.training.findUnique({
+        where: {
+          id: trainingId
+        }
+      })
+
+      return training;
+    } catch (error) {
+      this.logger.error(`Failed to get training for id "${trainingId}"`, error.stack);
+      throw new InternalServerErrorException();
+    }
+  };
+
+  async deleteTraining(trainingId: string): Promise<Training> {
+    try {
+      const result = await this.prisma.training.delete({
+        where: {
+          id: trainingId
+        }
+      })
+
+      return result;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        this.logger.error(`Training to delete for ID "${trainingId}" does not exist`, error.stack);
+        throw new NotFoundException('Training to delete does not exist');
+      } else {
+        this.logger.error(`Failed to delete training for id "${trainingId}"`, error.stack);
+        throw new InternalServerErrorException();
+      }
+    }
   }
 }
