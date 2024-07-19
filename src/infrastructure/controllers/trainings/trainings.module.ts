@@ -11,6 +11,13 @@ import { PrismaModule } from '@infrastructure/prisma/prisma.module';
     AuthModule
   ],
   controllers: [TrainingsController],
-  providers: [TrainingsUsecase, TrainingsRepository],
+  providers: [
+    TrainingsUsecase,
+    {
+      provide: 'TrainingsRepository',
+      useValue: TrainingsRepository
+    }
+  ],
+
 })
 export class TrainingsModule {}

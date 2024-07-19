@@ -1,10 +1,10 @@
 import {
+  Inject,
   Injectable,
   NotFoundException,
   Logger
 } from '@nestjs/common';
 import { Training } from '@domain/models/training.interface';
-import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
 import { TrainingDto, GetTrainingsFilterDto } from '@infrastructure/repositories/trainings/trainings.dto';
 import { User } from '@domain/models/user.interface';
 
@@ -13,7 +13,8 @@ export class TrainingsUsecase {
   private logger = new Logger();
 
   constructor(
-    private readonly trainingsRepository: TrainingsRepository,
+    @Inject('TrainingsRepository')
+    private readonly trainingsRepository
   ) {}
 
   async getTrainings(filterDto:  GetTrainingsFilterDto, user: User): Promise<Training[]> {
