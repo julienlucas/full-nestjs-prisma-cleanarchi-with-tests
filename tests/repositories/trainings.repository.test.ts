@@ -15,20 +15,6 @@ const mockUser = {
   updatedAt: new Date()
 };
 
-const mockTrainings = trainingsFakeData;
-const mockTraining = trainingsFakeData[2];
-const mockTrainingToDelete = trainingsFakeData[3];
-const mockTrainingToCreate = {
-  title: "Un titre",
-  description: "Une description"
-};
-const mockTrainingToUpdate = {
-  ...trainingsFakeData[2],
-  title: "Un nouveau titre",
-  description: "Une nouvelle description"
-};
-
-
 describe('Tests of Training usecases', () => {
   let trainingsRepository: TrainingsRepository;
 
@@ -72,6 +58,7 @@ describe('Tests of Training usecases', () => {
 
   test('TrainingsRepository getTrainings should return an array of trainings', async () => {
     //Arrange
+    const mockTrainings = trainingsFakeData;
     const mockFilterDto = { search: "" };
     findManyMock.mockResolvedValue(mockTrainings);
 
@@ -82,6 +69,7 @@ describe('Tests of Training usecases', () => {
 
   test('TrainingsRepository getTrainingById, should return the right training', async () => {
     //Arrange
+    const mockTraining = trainingsFakeData[2];
     findUniqueMock.mockResolvedValue(mockTraining);
 
     //Assert
@@ -91,28 +79,38 @@ describe('Tests of Training usecases', () => {
 
   test('TrainingsRepository createTraining, should return the right training created', async () => {
     //Arrange
-    createMock.mockResolvedValue(mockTrainingToCreate);
+    const newTraining = {
+      title: "Un titre",
+      description: "Une description"
+    };
+    createMock.mockResolvedValue(newTraining);
 
     //Assert
-    const result = await trainingsRepository.createTraining(mockTrainingToCreate, mockUser);
-    expect(result).toBe(mockTrainingToCreate);
+    const result = await trainingsRepository.createTraining(newTraining, mockUser);
+    expect(result).toBe(newTraining);
   });
 
   test('TrainingsRepository deleteTraining, should delete the right training', async () => {
     //Arrange
-    deleteMock.mockResolvedValue(mockTrainingToDelete);
+    const trainingId = trainingsFakeData[3].id;
+    deleteMock.mockResolvedValue(trainingId);
 
     //Assert
-    const result = await trainingsRepository.deleteTraining(mockTrainingToDelete.id);
-    expect(result).toBe(mockTrainingToDelete);
+    const result = await trainingsRepository.deleteTraining(trainingId);
+    expect(result).toBe(trainingId);
   });
 
   test('TrainingsRepository updateTraining, should delete the right training', async () => {
     //Arrange
-    updateMock.mockResolvedValue(mockTrainingToUpdate);
+    const trainingId = trainingsFakeData[2].id;
+    const updateTraining = {
+      title: "Un nouveau titre",
+      description: "Une nouvelle description"
+    };
+    updateMock.mockResolvedValue(updateTraining);
 
     //Assert
-    const result = await trainingsRepository.updateTraining(mockTrainingToUpdate, mockTraining.id, mockUser);
-    expect(result).toBe(mockTrainingToUpdate);
+    const result = await trainingsRepository.updateTraining(updateTraining, trainingId, mockUser);
+    expect(result).toBe(updateTraining);
   });
 });

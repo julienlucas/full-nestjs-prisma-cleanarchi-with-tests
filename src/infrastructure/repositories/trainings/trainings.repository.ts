@@ -1,5 +1,6 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { TrainingDto, GetTrainingsFilterDto } from '@infrastructure/repositories/trainings/trainings.dto';
+import { TrainingEntity } from '@domain/entities/training.entity';
 import { Training } from '@domain/models/training.interface';
 import { User } from '@domain/models/user.interface';
 import { Logger } from '@nestjs/common';
@@ -58,20 +59,32 @@ export class TrainingsRepository {
   async createTraining(training: TrainingDto, user: User): Promise<Training> {
     const { title, description } = training;
 
-    try {
-      const createdTraining = await this.prisma.training.create({
-        data: {
-          title,
-          description,
-          authorId: user.id
-        }
-      })
+    const trainingEntityInstance = TrainingEntity.getInstance();
+    const checkIfCanBeSubmited = (trainingEntityInstance as TrainingEntity).canBeSubmited(training?.title, training?.description);
 
-      return createdTraining;
-    } catch (error) {
-      this.logger.error(`Failed to create training for user "${user.email}"`, error.stack);
-      throw new InternalServerErrorException();
+    this.logger.log(checkIfCanBeSubmited)
+
+    if (checkIfCanBeSubmited) {
+      try {
+        const createdTraining = await this.prisma.training.create({
+          data: {
+            title,
+            description,
+            authorId: user.id
+          }
+        })
+
+        return createdTraining;
+      } catch (error) {
+        this.logger.error(`Failed to create training for user "${user.email}"`, error.stack);
+        throw new InternalServerErrorException();
+      }
     }
+
+    const message = "Training to create with not the max/min lengths title/description";
+
+    this.logger.error(message, 'Code_error: 404');
+    throw new NotFoundException({ message, code_error: 404 });
   }
 
   async updateTraining(training: TrainingDto, trainingId: string, user: User): Promise<Training> {

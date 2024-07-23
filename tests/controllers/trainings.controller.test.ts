@@ -18,8 +18,6 @@ describe('Tests of Training usecases', () => {
     updatedAt: new Date()
   };
 
-  const trainings = trainingsFakeData as any;
-
   const TrainingsRepository = {
     provide: TrainingsUsecase,
     useFactory: () => ({

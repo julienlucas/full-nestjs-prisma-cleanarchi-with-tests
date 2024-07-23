@@ -14,19 +14,6 @@ const mockUser = {
   updatedAt: new Date()
 };
 
-const mockTrainings = trainingsFakeData as any;
-const mockTraining = trainingsFakeData[2];
-const mockTrainingToDelete = trainingsFakeData[3];
-const mockTrainingToCreate = {
-  title: "Un titre",
-  description: "Une description"
-};
-const mockTrainingToUpdate = {
-  ...trainingsFakeData[2],
-  title: "Un nouveau titre",
-  description: "Une nouvelle description"
-};
-
 describe('Tests of Training usecases', () => {
   let trainingsUsecase: TrainingsUsecase;
 
@@ -65,46 +52,58 @@ describe('Tests of Training usecases', () => {
   test('getTrainings, should return an array of trainings', async () => {
     //Arrange
     const mockFilterDto = { search: "" };
-    getTrainingsMock.mockResolvedValue(mockTrainings);
+    const trainings = trainingsFakeData;
+    getTrainingsMock.mockResolvedValue(trainings);
 
     //Assert
     const result = await trainingsUsecase.getTrainings(mockFilterDto, mockUser);
-    expect(result).toBe(mockTrainings);
+    expect(result).toBe(trainings);
   });
 
   test('getTrainingById, should return the right training', async () => {
     //Arrange
-    getTrainingByIdMock.mockResolvedValue(mockTraining);
+    const trainingId = trainingsFakeData[2].id;
+    getTrainingByIdMock.mockResolvedValue(trainingId);
 
     //Assert
-    const result = await trainingsUsecase.getTrainingById(mockTraining.id, mockUser);
-    expect(result).toBe(mockTraining);
+    const result = await trainingsUsecase.getTrainingById(trainingId, mockUser);
+    expect(result).toBe(trainingId);
   });
 
   test('createTraining, should return the right training created', async () => {
     //Arrange
-    createTrainingMock.mockResolvedValue(mockTrainingToCreate);
+    const newTraining = {
+      title: "Un titre",
+      description: "Une description"
+    };
+    createTrainingMock.mockResolvedValue(newTraining);
 
     //Assert
-    const result = await trainingsUsecase.createTraining(mockTrainingToCreate, mockUser);
-    expect(result).toBe(mockTrainingToCreate);
+    const result = await trainingsUsecase.createTraining(newTraining, mockUser);
+    expect(result).toBe(newTraining);
   });
 
   test('deleteTraining, should return the training to delete', async () => {
     //Arrange
-    deleteTrainingMock.mockResolvedValue(mockTrainingToDelete);
+    const trainingId = trainingsFakeData[3].id;
+    deleteTrainingMock.mockResolvedValue(trainingId);
 
     //Assert
-    const result = await trainingsUsecase.deleteTraining(mockTrainingToDelete.id, mockUser);
-    expect(result).toBe(mockTrainingToDelete);
+    const result = await trainingsUsecase.deleteTraining(trainingId, mockUser);
+    expect(result).toBe(trainingId);
   });
 
   test('updateTraining, should update the training', async () => {
     //Arrange
-    updateTrainingMock.mockResolvedValue(mockTrainingToUpdate);
+    const trainingId = trainingsFakeData[2].id;
+    const updateTraining = {
+      title: "Un nouveau titre",
+      description: "Une nouvelle description"
+    };
+    updateTrainingMock.mockResolvedValue(updateTraining);
 
     //Assert
-    const result = await trainingsUsecase.updateTraining(mockTrainingToUpdate, mockTrainingToUpdate.id, mockUser);
-    expect(result).toBe(mockTrainingToUpdate);
+    const result = await trainingsUsecase.updateTraining(updateTraining, trainingId, mockUser);
+    expect(result).toBe(updateTraining);
   });
 });
