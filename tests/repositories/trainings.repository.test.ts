@@ -4,7 +4,6 @@ import { PassportModule } from '@nestjs/passport';
 import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
-import { PrismaService } from "@infrastructure/prisma/prisma.service";
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
 
 const mockUser = {
