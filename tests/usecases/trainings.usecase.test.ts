@@ -1,10 +1,8 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
-import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
-import { PrismaService } from "@infrastructure/prisma/prisma.service";
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
 
 const mockUser = {
@@ -16,46 +14,38 @@ const mockUser = {
   updatedAt: new Date()
 };
 
-const trainings = trainingsFakeData as any;
+const mockTrainings = trainingsFakeData as any;
+const mockTraining = trainingsFakeData[2];
+const mockTrainingToDelete = trainingsFakeData[3];
+const mockTrainingToCreate = {
+  title: "Un titre",
+  description: "Une description"
+};
+const mockTrainingToUpdate = {
+  ...trainingsFakeData[2],
+  title: "Un nouveau titre",
+  description: "Une nouvelle description"
+};
 
 describe('Tests of Training usecases', () => {
-  let trainingsRepository: TrainingsRepository;
   let trainingsUsecase: TrainingsUsecase;
 
-  // .mockImplementation(() => ({
-  //   getTrainings: () => trainings
-  // }));
-
-  class ApiServiceMock {
-    getTrainings() {
-      return [];
-    }
-  };
-
-  const findOne = vi.fn().mockImplementation(() => ({
-    getTrainings() { return trainings }
-  }));
+  let getTrainingsMock = vi.fn();
+  let getTrainingByIdMock = vi.fn();
+  let createTrainingMock = vi.fn();
+  let updateTrainingMock = vi.fn();
+  let deleteTrainingMock = vi.fn();
 
   beforeAll(async () => {
-    // const TrainingsRepositoryFactory = {
-    //   provide: TrainingsRepository,
-    //   useFactory: () => ({
-    //     getTrainings: vi.fn(() => trainings),
-    //     getTrainingById: vi.fn(() => []),
-    //     createTraining: vi.fn(() => []),
-    //     deleteTraining: vi.fn(() => []),
-    //     updateTraining: vi.fn(() => [])
-    //   })
-    // };
-    const TrainingsRepository = {
-      provide: TrainingsUsecase,
-      useFactory: () => ({
-        getTrainings: vi.fn(() => trainings),
-        getTrainingById: vi.fn(() => []),
-        createTraining: vi.fn(() => []),
-        deleteTraining: vi.fn(() => []),
-        updateTraining: vi.fn(() => [])
-      })
+    const TrainingsRepositoryProvider = {
+      provide: 'TrainingsRepository',
+      useValue: {
+        getTrainings: getTrainingsMock,
+        getTrainingById: getTrainingByIdMock,
+        createTraining: createTrainingMock,
+        updateTraining: updateTrainingMock,
+        deleteTraining: deleteTrainingMock
+      }
     };
 
     const app: TestingModule = await Test.createTestingModule({
@@ -65,7 +55,7 @@ describe('Tests of Training usecases', () => {
       controllers: [TrainingsController],
       providers: [
         TrainingsUsecase,
-        TrainingsRepository
+        TrainingsRepositoryProvider
       ],
     }).compile();
 
@@ -73,48 +63,48 @@ describe('Tests of Training usecases', () => {
   })
 
   test('getTrainings, should return an array of trainings', async () => {
+    //Arrange
     const mockFilterDto = { search: "" };
+    getTrainingsMock.mockResolvedValue(mockTrainings);
 
-    trainingsUsecase.getTrainings(mockFilterDto, mockUser);
-    // vi.spyOn(findOne, 'getTrainings').mockImplementation(() => trainings);
-    expect(trainingsUsecase.getTrainings).toHaveReturnedWith(trainings);
+    //Assert
+    const result = await trainingsUsecase.getTrainings(mockFilterDto, mockUser);
+    expect(result).toBe(mockTrainings);
   });
 
-  // test('getTrainingBytId, should return the right training', async () => {
-  //   const training = trainingsFakeData[0] as any;
-  //   const trainingId = trainingsFakeData[0].id
+  test('getTrainingById, should return the right training', async () => {
+    //Arrange
+    getTrainingByIdMock.mockResolvedValue(mockTraining);
 
-  //   vi.spyOn(trainingsUsecase, 'getTrainingById').mockImplementation(() => training);
-  //   expect(await trainingsController.getTrainingById(trainingId, mockUser)).toStrictEqual(training);
-  // });
+    //Assert
+    const result = await trainingsUsecase.getTrainingById(mockTraining.id, mockUser);
+    expect(result).toBe(mockTraining);
+  });
 
-  // test('createTraining, should return the right training created', async () => {
-  //   const training = {
-  //     title: "Un titre",
-  //     description: "Une description"
-  //   } as any;
+  test('createTraining, should return the right training created', async () => {
+    //Arrange
+    createTrainingMock.mockResolvedValue(mockTrainingToCreate);
 
-  //   vi.spyOn(trainingsUsecase, 'createTraining').mockImplementation(() => training);
-  //   expect(await trainingsController.createTraining(training, mockUser)).toStrictEqual(training);
-  // });
+    //Assert
+    const result = await trainingsUsecase.createTraining(mockTrainingToCreate, mockUser);
+    expect(result).toBe(mockTrainingToCreate);
+  });
 
-  // test('deleteTraining, should return the training to delete', async () => {
-  //   const trainingId = trainingsFakeData[0].id
-  //   const training = trainingsFakeData[0] as any;
+  test('deleteTraining, should return the training to delete', async () => {
+    //Arrange
+    deleteTrainingMock.mockResolvedValue(mockTrainingToDelete);
 
-  //   vi.spyOn(trainingsUsecase, 'deleteTraining').mockImplementation(() => training);
-  //   expect(await trainingsController.deleteTraining(trainingId, mockUser)).toStrictEqual(training);
-  // });
+    //Assert
+    const result = await trainingsUsecase.deleteTraining(mockTrainingToDelete.id, mockUser);
+    expect(result).toBe(mockTrainingToDelete);
+  });
 
-  // test('updateTraining, should update the training', async () => {
-  //   let training = trainingsFakeData[0] as any;
-  //   let trainingId = trainingsFakeData[0].id;
-  //   training = {
-  //     title: "Nouveau titre",
-  //     description: "Nouvelle description",
-  //   };
+  test('updateTraining, should update the training', async () => {
+    //Arrange
+    updateTrainingMock.mockResolvedValue(mockTrainingToUpdate);
 
-  //   vi.spyOn(trainingsUsecase, 'updateTraining').mockImplementation(() => training);
-  //   expect(await trainingsController.updateTraining(training, trainingId, mockUser)).toStrictEqual(training);
-  // });
+    //Assert
+    const result = await trainingsUsecase.updateTraining(mockTrainingToUpdate, mockTrainingToUpdate.id, mockUser);
+    expect(result).toBe(mockTrainingToUpdate);
+  });
 });

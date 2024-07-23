@@ -37,6 +37,7 @@ export class TrainingsUsecase {
     this.logger.verbose('getTrainingByIdUsecases', `User "${user.email}" retrieving training ID "${trainingId}`);
     return training;
   }
+
   async createTraining(training: TrainingDto, user: User): Promise<Training> {
     const result = await this.trainingsRepository.createTraining(training, user);
 

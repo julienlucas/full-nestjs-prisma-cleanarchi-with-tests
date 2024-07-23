@@ -32,30 +32,23 @@ const mockTrainingToUpdate = {
 
 describe('Tests of Training usecases', () => {
   let trainingsRepository: TrainingsRepository;
-  let trainingsUsecase: TrainingsUsecase;
-  let prismaService: PrismaService;
+
   let findManyMock = vi.fn();
   let findUniqueMock = vi.fn();
-
+  let createMock = vi.fn();
+  let updateMock = vi.fn();
+  let deleteMock = vi.fn();
 
   beforeAll(async () => {
-    // const TrainingsRepositoryProvider = {
-    //   provide: 'TrainingsRepository',
-    //   useFactory: () => ({
-    //     getTrainings: vi.fn(() => mockTrainings),
-    //     getTrainingById: vi.fn(() => mockTrainingById),
-    //     createTraining: vi.fn(() => mockTraining),
-    //     deleteTraining: vi.fn(() => mockTrainingToDelete),
-    //     updateTraining: vi.fn(() => mockTrainingToUpdate)
-    //   })
-    // };
-
     const PrismaProvider = {
       provide: 'prisma',
       useValue: {
         training: {
           findMany: findManyMock,
-          findUnique: findUniqueMock
+          findUnique: findUniqueMock,
+          create: createMock,
+          update: updateMock,
+          delete: deleteMock,
         }
       }
     };
@@ -67,57 +60,60 @@ describe('Tests of Training usecases', () => {
       controllers: [TrainingsController],
       providers: [
         TrainingsUsecase,
-        // TrainingsRepositoryProvider,
         {
           provide: 'TrainingsRepository',
           useClass: TrainingsRepository
         },
         PrismaProvider
-        // {
-        //   provide: 'prisma',
-        //   useClass: PrismaService
-        // }
       ],
     }).compile();
 
-    trainingsUsecase = app.get<TrainingsUsecase>(TrainingsUsecase);
     trainingsRepository = app.get<TrainingsRepository>('TrainingsRepository');
-    prismaService = app.get<PrismaService>('prisma');
   })
 
   test('TrainingsRepository getTrainings should return an array of trainings', async () => {
+    //Arrange
     const mockFilterDto = { search: "" };
+    findManyMock.mockResolvedValue(mockTrainings);
 
-     findManyMock.mockResolvedValue(mockTrainings);
-
-    // trainingsRepository.getTrainings(mockFilterDto, mockUser);
-    // expect(prismaService.training.findMany).toHaveBeenCalledTimes(2);
-    // expect(trainingsRepository.getTrainings).toHaveReturnedWith(mockTrainings);
+    //Assert
     const result = await trainingsRepository.getTrainings(mockFilterDto, mockUser);
     expect(result).toBe(mockTrainings);
   });
 
-  test('TrainingsRepository getTrainingBytId, should return the right training', async () => {
-    // trainingsRepository.getTrainingById(mockTrainingById.id);
-    // expect(trainingsRepository.getTrainingById).toHaveReturnedWith(mockTrainingById);
-
+  test('TrainingsRepository getTrainingById, should return the right training', async () => {
+    //Arrange
     findUniqueMock.mockResolvedValue(mockTraining);
+
+    //Assert
     const result = await trainingsRepository.getTrainingById(mockTraining.id);
     expect(result).toBe(mockTraining);
   });
 
-  // test('TrainingsRepository createTraining, should return the right training created', async () => {
-  //   trainingsRepository.createTraining(mockTraining, mockUser);
-  //   expect(trainingsRepository.createTraining).toHaveReturnedWith(mockTraining);
-  // });
+  test('TrainingsRepository createTraining, should return the right training created', async () => {
+    //Arrange
+    createMock.mockResolvedValue(mockTrainingToCreate);
 
-  // test('TrainingsRepository deleteTraining, should delete the right training', async () => {
-  //   trainingsRepository.deleteTraining(mockTrainingToDelete.id);
-  //   expect(trainingsRepository.deleteTraining).toHaveReturnedWith(mockTrainingToDelete);
-  // });
+    //Assert
+    const result = await trainingsRepository.createTraining(mockTrainingToCreate, mockUser);
+    expect(result).toBe(mockTrainingToCreate);
+  });
 
-  // test('TrainingsRepository updateTraining, should delete the right training', async () => {
-  //   trainingsRepository.updateTraining(mockTrainingToUpdate, mockTrainingById.id, mockUser);
-  //   expect(trainingsRepository.updateTraining).toHaveReturnedWith(mockTrainingToUpdate);
-  // });
+  test('TrainingsRepository deleteTraining, should delete the right training', async () => {
+    //Arrange
+    deleteMock.mockResolvedValue(mockTrainingToDelete);
+
+    //Assert
+    const result = await trainingsRepository.deleteTraining(mockTrainingToDelete.id);
+    expect(result).toBe(mockTrainingToDelete);
+  });
+
+  test('TrainingsRepository updateTraining, should delete the right training', async () => {
+    //Arrange
+    updateMock.mockResolvedValue(mockTrainingToUpdate);
+
+    //Assert
+    const result = await trainingsRepository.updateTraining(mockTrainingToUpdate, mockTraining.id, mockUser);
+    expect(result).toBe(mockTrainingToUpdate);
+  });
 });
