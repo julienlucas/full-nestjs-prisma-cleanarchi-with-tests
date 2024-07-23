@@ -17,7 +17,7 @@ export class TrainingsUsecase {
     private readonly trainingsRepository
   ) {}
 
-  async getTrainings(filterDto:  GetTrainingsFilterDto, user: User): Promise<Training[]> {
+  async getTrainings(filterDto?: GetTrainingsFilterDto, user?: User): Promise<Training[]> {
     const result = await this.trainingsRepository.getTrainings(filterDto, user);
 
     this.logger.verbose('getTrainingsUsecases', `User "${user.email}" retrieving all trainings. Filters: ${JSON.stringify(filterDto)}`);

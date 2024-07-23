@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PrismaService } from "@infrastructure/prisma/prisma.service";
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
@@ -15,9 +16,12 @@ import { PrismaModule } from '@infrastructure/prisma/prisma.module';
     TrainingsUsecase,
     {
       provide: 'TrainingsRepository',
-      useValue: TrainingsRepository
+      useClass: TrainingsRepository
+    },
+    {
+      provide: 'prisma',
+      useClass: PrismaService
     }
-  ],
-
+  ]
 })
 export class TrainingsModule {}

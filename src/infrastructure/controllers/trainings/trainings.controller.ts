@@ -10,7 +10,7 @@ import { TrainingPresenter } from '@infrastructure/presenters/training.presenter
 import { User } from '@domain/models/user.interface';
 
 @Controller('trainings')
-@ApiTags('TrainingsController')
+@ApiTags('Trainings')
 @ApiResponse({ status: 500, description: 'Internal error' })
 @ApiExtraModels(TrainingPresenter)
 @UseGuards(AuthGuard())
@@ -98,9 +98,9 @@ export class TrainingsController {
   })
   @ApiResponseType(TrainingPresenter, true)
   async updateTraining(
+    @Body() training: TrainingDto,
     @Param('id') trainingId: string,
-    @GetUser() user: User,
-    @Body() training: TrainingDto
+    @GetUser() user: User
   ): Promise<Training> {
     const updatedTraining = await this.TrainingsUsecase.updateTraining(training, trainingId, user);
 

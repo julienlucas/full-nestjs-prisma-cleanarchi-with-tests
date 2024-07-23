@@ -1,6 +1,5 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { TrainingDto, GetTrainingsFilterDto } from '@infrastructure/repositories/trainings/trainings.dto';
-import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import { Training } from '@domain/models/training.interface';
 import { User } from '@domain/models/user.interface';
 import { Logger } from '@nestjs/common';
@@ -10,7 +9,8 @@ export class TrainingsRepository {
   private logger = new Logger('TrainingsRepository', { timestamp: true });
 
   constructor(
-    private prisma: PrismaService
+    @Inject('prisma')
+    private prisma
   ) {}
 
   async getTrainings(filterDto: GetTrainingsFilterDto, user: User): Promise<Training[]> {
@@ -38,7 +38,22 @@ export class TrainingsRepository {
       this.logger.error(`Failed to get tasks for user "${user.email}". Filters: ${JSON.stringify(filterDto)}`, error.stack);
       throw new InternalServerErrorException();
     }
-  }
+  };
+
+  async getTrainingById(trainingId: string): Promise<Training> {
+    try {
+      const training = await this.prisma.training.findUnique({
+        where: {
+          id: trainingId
+        }
+      })
+
+      return training;
+    } catch (error) {
+      this.logger.error(`Failed to get training for id "${trainingId}"`, error.stack);
+      throw new InternalServerErrorException();
+    }
+  };
 
   async createTraining(training: TrainingDto, user: User): Promise<Training> {
     const { title, description } = training;
@@ -79,21 +94,6 @@ export class TrainingsRepository {
       throw new InternalServerErrorException();
     }
   }
-
-  async getTrainingById(trainingId: string): Promise<Training> {
-    try {
-      const training = await this.prisma.training.findUnique({
-        where: {
-          id: trainingId
-        }
-      })
-
-      return training;
-    } catch (error) {
-      this.logger.error(`Failed to get training for id "${trainingId}"`, error.stack);
-      throw new InternalServerErrorException();
-    }
-  };
 
   async deleteTraining(trainingId: string): Promise<Training> {
     try {

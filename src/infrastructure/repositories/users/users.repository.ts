@@ -1,5 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PrismaService } from "@infrastructure/prisma/prisma.service";
+import { ConflictException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AuthCrendentialsDto } from '@infrastructure/repositories/users/users.dto';
 import { User } from '@domain/models/user.interface';
 import { Logger } from '@nestjs/common';
@@ -9,7 +8,10 @@ import * as bcrypt from 'bcrypt';
 export class UsersRepository {
   private logger = new Logger('UsersRepository', { timestamp: true });
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    @Inject('prisma')
+    private prisma
+  ) {}
 
   async signIn(authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
     try {
