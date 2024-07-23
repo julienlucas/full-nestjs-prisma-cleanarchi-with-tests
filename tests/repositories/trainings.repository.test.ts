@@ -1,10 +1,16 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
+import { faker } from "@faker-js/faker";
 import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
+import {
+  MIN_LENGTH_TITLE,
+  MAX_LENGTH_TITLE,
+  MIN_LENGTH_DESCRIPTION
+} from '@domain/entities/training.entity';
 
 const mockUser = {
   id: trainingsFakeData[0].authorId,
@@ -79,15 +85,25 @@ describe('Tests of Training usecases', () => {
 
   test('TrainingsRepository createTraining, should return the right training created', async () => {
     //Arrange
-    const newTraining = {
-      title: "Un titre",
-      description: "Une description"
+    let newTraining = {
+      title: faker.string.alphanumeric(MIN_LENGTH_TITLE + 1),
+      description: ""
     };
     createMock.mockResolvedValue(newTraining);
 
     //Assert
     const result = await trainingsRepository.createTraining(newTraining, mockUser);
     expect(result).toBe(newTraining);
+
+    //Arrange
+    newTraining = {
+      title: faker.string.alphanumeric(MAX_LENGTH_TITLE + 1),
+      description: faker.string.alphanumeric(MIN_LENGTH_DESCRIPTION + 1),
+    };
+    createMock.mockResolvedValue(newTraining);
+
+    //Assert
+    await expect(trainingsRepository.createTraining(newTraining, mockUser)).rejects.toThrow();
   });
 
   test('TrainingsRepository deleteTraining, should delete the right training', async () => {
