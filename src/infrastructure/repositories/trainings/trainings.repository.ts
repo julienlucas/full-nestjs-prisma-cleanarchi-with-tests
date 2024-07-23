@@ -62,8 +62,6 @@ export class TrainingsRepository {
     const trainingEntityInstance = TrainingEntity.getInstance();
     const checkIfCanBeSubmited = (trainingEntityInstance as TrainingEntity).canBeSubmited(training?.title, training?.description);
 
-    this.logger.log(checkIfCanBeSubmited)
-
     if (checkIfCanBeSubmited) {
       try {
         const createdTraining = await this.prisma.training.create({
