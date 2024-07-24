@@ -98,6 +98,7 @@ describe('Tests of Training usecases', () => {
 
     //Act
     trainingsController.updateTraining(training, trainingId, mockUser);
+
     //Assert
     expect(trainingsUsecaseSpy.updateTraining).toHaveBeenCalledWith(training, trainingId, mockUser);
   });

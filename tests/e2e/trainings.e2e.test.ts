@@ -20,6 +20,7 @@ describe('Tests of Training usecases', () => {
     .compile();
 
     app = moduleRef.createNestApplication();
+    app.enableShutdownHooks();
     await app.init();
   });
 
