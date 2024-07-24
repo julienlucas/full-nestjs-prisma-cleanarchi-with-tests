@@ -1,6 +1,5 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PassportModule } from '@nestjs/passport';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
@@ -36,9 +35,6 @@ describe('Tests of Training usecases', () => {
     };
 
     const app: TestingModule = await Test.createTestingModule({
-      imports: [
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-      ],
       controllers: [TrainingsController],
       providers: [
         TrainingsUsecase,
@@ -49,7 +45,7 @@ describe('Tests of Training usecases', () => {
     trainingsUsecase = app.get<TrainingsUsecase>(TrainingsUsecase);
   })
 
-  test('getTrainings, should return an array of trainings', async () => {
+  test('TrainingUsecase getTrainings, should return an array of trainings', async () => {
     //Arrange
     const mockFilterDto = { search: "" };
     const trainings = trainingsFakeData;
@@ -60,7 +56,7 @@ describe('Tests of Training usecases', () => {
     expect(result).toBe(trainings);
   });
 
-  test('getTrainingById, should return the right training', async () => {
+  test('TrainingUsecase getTrainingById, should return the right training', async () => {
     //Arrange
     const trainingId = trainingsFakeData[2].id;
     getTrainingByIdMock.mockResolvedValue(trainingId);
@@ -70,7 +66,7 @@ describe('Tests of Training usecases', () => {
     expect(result).toBe(trainingId);
   });
 
-  test('createTraining, should return the right training created', async () => {
+  test('TrainingUsecase createTraining, should return the right training created', async () => {
     //Arrange
     const newTraining = {
       title: "Un titre",
@@ -83,7 +79,7 @@ describe('Tests of Training usecases', () => {
     expect(result).toBe(newTraining);
   });
 
-  test('deleteTraining, should return the training to delete', async () => {
+  test('TrainingUsecase deleteTraining, should return the training to delete', async () => {
     //Arrange
     const trainingId = trainingsFakeData[3].id;
     deleteTrainingMock.mockResolvedValue(trainingId);
@@ -93,7 +89,7 @@ describe('Tests of Training usecases', () => {
     expect(result).toBe(trainingId);
   });
 
-  test('updateTraining, should update the training', async () => {
+  test('TrainingUsecase updateTraining, should update the training', async () => {
     //Arrange
     const trainingId = trainingsFakeData[2].id;
     const updateTraining = {

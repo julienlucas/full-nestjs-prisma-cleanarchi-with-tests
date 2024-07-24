@@ -62,10 +62,12 @@ describe('Tests of Training usecases', () => {
     const trainings = JSON.parse(result.text);
 
     expect(trainings).toEqual(
-      expect.arrayContaining([expect.objectContaining({
-        title,
-        description
-      })])
+      expect.arrayContaining([
+          expect.objectContaining({
+          title,
+          description
+        })
+      ])
     );
   });
 

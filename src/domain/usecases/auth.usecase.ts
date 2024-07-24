@@ -17,7 +17,7 @@ export class AuthUsecase {
   async signUp(authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
     const result = await this.usersRepository.createUser(authCrendentialsDto);
 
-    this.logger.verbose('signUpUsecase', `User created successfully`);
+    this.logger.verbose('signUpUsecase', 'User created successfully');
     return result;
   }
 
@@ -30,7 +30,7 @@ export class AuthUsecase {
       const accessToken: string = await this.jwtService.sign(payload);
 
       this.logger.verbose('signInUsecase', accessToken);
-      this.logger.verbose('signInUsecase', `User signin successfully`);
+      this.logger.verbose('signInUsecase', 'User signin successfully');
 
       return { accessToken };
     } else {

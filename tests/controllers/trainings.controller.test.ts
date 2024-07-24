@@ -45,7 +45,7 @@ describe('Tests of Training usecases', () => {
     trainingsUsecaseSpy = app.get<TrainingsUsecase>(TrainingsUsecase);
   })
 
-  test('TrainingsUsecase - calling getTrainings method', async () => {
+  test('TrainingsController - calling getTrainings method', async () => {
     //Arrange
     const mockFilterDto = { search: "" };
 
@@ -55,7 +55,7 @@ describe('Tests of Training usecases', () => {
     expect(trainingsUsecaseSpy.getTrainings).toHaveBeenCalled();
   });
 
-  test('TrainingsUsecase - calling getTrainingById method', async () => {
+  test('TrainingsController calling getTrainingById method', async () => {
     //Arrange
     const trainingId = trainingsFakeData[0].id
 
@@ -65,7 +65,7 @@ describe('Tests of Training usecases', () => {
     expect(trainingsUsecaseSpy.getTrainingById).toHaveBeenCalledWith(trainingId, mockUser);
   });
 
-  test('TrainingsUsecase - calling createTraining method', async () => {
+  test('TrainingsController calling createTraining method', async () => {
     //Arrange
     const training = {
       title: "Un titre",
@@ -78,7 +78,7 @@ describe('Tests of Training usecases', () => {
     expect(trainingsUsecaseSpy.createTraining).toHaveBeenCalledWith(training, mockUser);
   });
 
-  test('TrainingsUsecase - calling deleteTraining method', async () => {
+  test('TrainingsController calling deleteTraining method', async () => {
     //Arrange
     const trainingId = trainingsFakeData[0].id
 
@@ -88,7 +88,7 @@ describe('Tests of Training usecases', () => {
     expect(trainingsUsecaseSpy.deleteTraining).toHaveBeenCalledWith(trainingId, mockUser);
   });
 
-  test('TrainingsUsecase - calling updateTraining method', async () => {
+  test('TrainingsController calling updateTraining method', async () => {
     //Arrange
     let trainingId = trainingsFakeData[0].id;
     const training = {
