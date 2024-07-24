@@ -41,13 +41,12 @@ src
 │   ├── Entities (règles métier)
 │   ├── Models (data models TypeScript)
 │   └── Use cases (actions/logique métier)
-├── Infrastructure
-│   └── Common (utils communs)
-│   └── Controllers (définition des endpoints et actions / swagger )
-│   └── Repositories (connexion aux API's, BDD's)
-│   └── Presenters (adapters sortie de la data des use cases)
-│   └── Prisma (ORM)
-└── Tests
+└── Infrastructure
+    └── Common (utils communs)
+    └── Controllers (définition des endpoints et actions / swagger )
+    └── Repositories (connexion aux API's, BDD's)
+    └── Presenters (adapters sortie de la data des use cases)
+    └── Prisma (ORM)
 
 ```
 
