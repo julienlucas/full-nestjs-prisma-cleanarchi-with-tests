@@ -28,7 +28,7 @@ describe('Tests of Training usecases', () => {
     })
     .compile();
 
-    app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
+    app = moduleRef.createNestApplication();
     await app.init();
   });
 
