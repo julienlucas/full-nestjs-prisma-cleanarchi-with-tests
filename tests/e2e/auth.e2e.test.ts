@@ -1,7 +1,6 @@
 import request from 'supertest';
 import { beforeAll, afterAll, describe, expect, test } from 'vitest';
 import { Test } from '@nestjs/testing';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from "@src/app.module";
 
@@ -14,7 +13,7 @@ describe('Tests of Training usecases', () => {
     const charset = "!@#$%&'()*+,^-./:;<=>?[]_`{~}|0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     var retVal = "";
     for (var i = 0, n = charset.length; i < length; ++i) {
-        retVal += charset.charAt(Math.floor(Math.random() * n));
+      retVal += charset.charAt(Math.floor(Math.random() * n));
     }
     return retVal;
   };
