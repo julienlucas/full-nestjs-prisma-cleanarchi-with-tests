@@ -31,6 +31,10 @@ describe('Tests of Training usecases', () => {
     await app.init();
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   test('/auth/signup should create a new user', async () => {
     const result = await request(app.getHttpServer())
       .post('/auth/signup')
@@ -55,9 +59,5 @@ describe('Tests of Training usecases', () => {
     const hash = accessToken.substring(0, accessToken.indexOf("."));
 
     expect(hash).toEqual(expectedHash);
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

@@ -23,6 +23,10 @@ describe('Tests of Training usecases', () => {
     await app.init();
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   test('/trainings POST should create and return a training', async () => {
     const resultToken = await request(app.getHttpServer())
       .post('/auth/signin')
@@ -110,9 +114,5 @@ describe('Tests of Training usecases', () => {
       .delete(`/trainings/${trainingId}`)
       .auth(accessToken, { type: 'bearer' })
       .expect(200);
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });
