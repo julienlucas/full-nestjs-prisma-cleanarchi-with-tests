@@ -1,10 +1,4 @@
-## Description
-
-Starter [Nest.js](https://github.com/nestjs/nest) in Clean Architecture and TypeScript.
-Just a basic Todo task app example.
-
-## Swagger
-Swagger is available at : http://localhost:3000/api-docs
+# CleanArchi back-end Nestjs / Prisma
 
 ## Installation
 
@@ -36,6 +30,25 @@ $ pnpm run test:e2e
 
 # test coverage
 $ pnpm run test:cov
+```
+
+## Swagger
+Le Swagger est disponible à : http://localhost:3000/api-docs
+
+```
+src
+├── Domain
+│   ├── Entities (règles métier)
+│   ├── Models (data models TypeScript)
+│   └── Use cases (actions/logique métier)
+├── Infrastructure
+│   └── Common (utils communs)
+│   └── Controllers (définition des endpoints et actions / swagger )
+│   └── Repositories (connexion aux API's, BDD's)
+│   └── Presenters (adapters sortie de la data des use cases)
+│   └── Prisma (ORM)
+└── Tests
+
 ```
 
 ## License
