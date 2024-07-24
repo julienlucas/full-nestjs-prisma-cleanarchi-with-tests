@@ -32,7 +32,7 @@ describe('Tests of Training usecases', () => {
   });
 
   afterAll(async () => {
-    await app?.close();
+    await app.close();
   });
 
   test('/auth/signup should create a new user', async () => {
