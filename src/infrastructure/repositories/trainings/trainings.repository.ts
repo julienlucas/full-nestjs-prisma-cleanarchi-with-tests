@@ -36,7 +36,7 @@ export class TrainingsRepository {
 
       return trainings;
     } catch (error) {
-      this.logger.error(`Failed to get tasks for user "${user.email}". Filters: ${JSON.stringify(filterDto)}`, error.stack);
+      this.logger.error(`Failed to get trainings for user "${user.email}". Filters: ${JSON.stringify(filterDto)}`, error.stack);
       throw new InternalServerErrorException();
     }
   };
