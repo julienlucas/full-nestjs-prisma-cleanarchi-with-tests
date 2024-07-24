@@ -1,9 +1,9 @@
 import SingletonMixin from '@infrastructure/singleton.mixin';
 
-export const MIN_LENGTH_TITLE = 20;
-export const MAX_LENGTH_TITLE = 60;
-export const MIN_LENGTH_DESCRIPTION = 10;
-export const MAX_LENGTH_DESCRIPTION = 500;
+export const MIN_LENGTH_TITLE = 10;
+export const MAX_LENGTH_TITLE = 50;
+export const MIN_LENGTH_DESCRIPTION = 20;
+export const MAX_LENGTH_DESCRIPTION = 80;
 
 export class TrainingEntity extends SingletonMixin {
   canBeSubmited(title: string, description: string): boolean {

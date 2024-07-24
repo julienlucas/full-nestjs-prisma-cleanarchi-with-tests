@@ -4,9 +4,10 @@ import path from 'path';
 
 export default defineConfig({
   test: {
-    include: ['**/*.test.ts'],
+    include: ['**/*.test.ts', '**/*.e2e-test.ts'],
     globals: true,
     alias: {
+      '@src': path.resolve(__dirname, 'src'),
       '@domain': path.resolve(__dirname, 'src/domain'),
       '@infrastructure': path.resolve(__dirname, 'src/infrastructure'),
       '@tests': path.resolve(__dirname, 'tests'),
