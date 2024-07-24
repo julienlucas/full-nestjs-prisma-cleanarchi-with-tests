@@ -2,6 +2,7 @@ import request from 'supertest';
 import { beforeAll, afterAll, describe, expect, test } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { faker } from "@faker-js/faker";
 import { AppModule } from "@src/app.module";
 import { MIN_LENGTH_TITLE, MIN_LENGTH_DESCRIPTION } from '@domain/entities/training.entity';
@@ -19,7 +20,7 @@ describe('Tests of Training usecases', () => {
     })
     .compile();
 
-    app = moduleRef.createNestApplication();
+    app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
   });
 

@@ -30,8 +30,8 @@ export class UsersRepository {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    console.log('salt', salt);
-    console.log('hashedPassword', hashedPassword);
+    // console.log('salt', salt);
+    // console.log('hashedPassword', hashedPassword);
 
     try {
       const result = await this.prisma.user.create({

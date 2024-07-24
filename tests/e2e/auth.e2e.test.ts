@@ -1,6 +1,7 @@
 import request from 'supertest';
-import { beforeAll, afterAll, describe, expect, test, vi } from 'vitest';
+import { beforeAll, afterAll, describe, expect, test } from 'vitest';
 import { Test } from '@nestjs/testing';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from "@src/app.module";
 
@@ -27,7 +28,7 @@ describe('Tests of Training usecases', () => {
     })
     .compile();
 
-    app = moduleRef.createNestApplication();
+    app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
   });
 
