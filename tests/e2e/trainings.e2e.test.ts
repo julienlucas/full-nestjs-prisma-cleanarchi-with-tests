@@ -20,12 +20,7 @@ describe('Tests of Training usecases', () => {
     .compile();
 
     app = moduleRef.createNestApplication();
-    app.enableShutdownHooks();
     await app.init();
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 
   test('/trainings POST should create and return a training', async () => {
@@ -115,5 +110,9 @@ describe('Tests of Training usecases', () => {
       .delete(`/trainings/${trainingId}`)
       .auth(accessToken, { type: 'bearer' })
       .expect(200);
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });

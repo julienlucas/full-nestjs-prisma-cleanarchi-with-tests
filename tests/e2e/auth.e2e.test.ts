@@ -28,12 +28,7 @@ describe('Tests of Training usecases', () => {
     .compile();
 
     app = moduleRef.createNestApplication();
-    app.enableShutdownHooks();
     await app.init();
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 
   test('/auth/signup should create a new user', async () => {
@@ -60,5 +55,9 @@ describe('Tests of Training usecases', () => {
     const hash = accessToken.substring(0, accessToken.indexOf("."));
 
     expect(hash).toEqual(expectedHash);
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });
