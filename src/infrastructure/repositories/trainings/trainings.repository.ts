@@ -1,9 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { TrainingDto, GetTrainingsFilterDto } from '@infrastructure/repositories/trainings/trainings.dto';
 import { Training } from '@domain/models/training.interface';
 import { User } from '@domain/models/user.interface';
 
-@Injectable()
 export abstract class TrainingsRepository {
   abstract getTrainings(filterDto: GetTrainingsFilterDto, user: User): Promise<Training[]>;
   abstract getTrainingById(trainingId: string): Promise<Training>;
