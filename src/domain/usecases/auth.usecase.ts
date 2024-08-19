@@ -1,6 +1,8 @@
 import { Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { UsersRepository } from '@infrastructure/repositories/users/users.repository';
+import { UsersPrismaRepository } from '@infrastructure/prisma/users.prisma.repository';
 import { AuthCrendentialsDto } from '@infrastructure/repositories/users/users.dto';
 import { User } from '@domain/models/user.interface';
 
@@ -8,11 +10,24 @@ import { User } from '@domain/models/user.interface';
 export class AuthUsecase {
   private logger = new Logger();
 
+  // constructor(
+  //   @Inject('UsersRepository')
+  //   private readonly usersRepository: UsersRepository,
+  //   private readonly jwtService: JwtService
+  // ) {}
+
   constructor(
     @Inject('UsersRepository')
-    private readonly usersRepository,
+    private readonly usersRepository: UsersRepository,
     private readonly jwtService: JwtService
   ) {}
+
+  // usersRepository;
+
+  // constructor() {
+  //   // super()
+  //   this.usersRepository = new UsersRepository()
+  // }
 
   async signUp(authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
     const result = await this.usersRepository.createUser(authCrendentialsDto);
@@ -21,7 +36,7 @@ export class AuthUsecase {
     return result;
   }
 
-  async signIn(authCrendentialsDto: AuthCrendentialsDto): Promise<{ accessToken: string }> {
+  async signIn(authCrendentialsDto: AuthCrendentialsDto): Promise<string> {
     const { email, password } = authCrendentialsDto;
     const user = await this.usersRepository.signIn(authCrendentialsDto);
 
@@ -32,10 +47,10 @@ export class AuthUsecase {
       this.logger.verbose('signInUsecase', accessToken);
       this.logger.verbose('signInUsecase', 'User signin successfully');
 
-      return { accessToken };
+      return accessToken;
     } else {
       const message = 'Please check your login credentials';
-      this.logger.error(message, 'Code_error: 401');
+      this.logger.error(message, 'code_error: 401');
       throw new UnauthorizedException({ message, code_error: 401 });
     }
   }

@@ -1,4 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+  BadRequestException,
+  NotFoundException
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiTags, ApiResponse, ApiExtraModels } from '@nestjs/swagger';
 import { GetUser } from '@infrastructure/common/user.decorator';
@@ -15,8 +28,10 @@ import { User } from '@domain/models/user.interface';
 @ApiExtraModels(TrainingPresenter)
 @UseGuards(AuthGuard())
 export class TrainingsController {
+  private logger = new Logger();
+
   constructor(
-    private readonly TrainingsUsecase: TrainingsUsecase,
+    private readonly TrainingsUsecase: TrainingsUsecase
   ) {}
 
   @Get()
@@ -48,9 +63,20 @@ export class TrainingsController {
     @Param('id') id: string,
     @GetUser() user: User
   ): Promise<Training> {
-    const training = await this.TrainingsUsecase.getTrainingById(id, user);
+    try {
+      const training = await this.TrainingsUsecase.getTrainingById(id, user);
 
-    return new TrainingPresenter(training);
+      if (!training) {
+        const message = `Training with ID "${id}" not found.`;
+
+        this.logger.error(message, 'code_error: 404');
+        throw new NotFoundException({ message, code_error: 404 });
+      }
+
+      return new TrainingPresenter(training);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
   @Post()

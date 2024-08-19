@@ -1,7 +1,6 @@
 import {
   Inject,
   Injectable,
-  NotFoundException,
   Logger
 } from '@nestjs/common';
 import { Training } from '@domain/models/training.interface';
@@ -26,13 +25,6 @@ export class TrainingsUsecase {
 
   async getTrainingById(trainingId: string, user: User): Promise<Training> {
     const training = await this.trainingsRepository.getTrainingById(trainingId);
-
-    if (!training) {
-      const message = `Training with ID "${trainingId}" not found.`;
-
-      this.logger.error(message, 'Code_error: 404');
-      throw new NotFoundException({ message, code_error: 404 });
-    }
 
     this.logger.verbose('getTrainingByIdUsecases', `User "${user.email}" retrieving training ID "${trainingId}`);
     return training;

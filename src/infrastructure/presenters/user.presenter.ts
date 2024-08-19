@@ -28,9 +28,9 @@ export class UserPresenter {
 
 export class BearerTokenPresenter {
   @ApiProperty()
-  token: string;
+  accesstoken: string;
 
-  constructor(token: string) {
-    this.token = token;
+  constructor(accesstoken: string) {
+    this.accesstoken = accesstoken;
   }
 }

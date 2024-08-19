@@ -9,11 +9,11 @@ import { PrismaModule } from '@infrastructure/prisma/prisma.module';
   imports: [
     AuthModule,
     PrismaModule,
+    TrainingsModule,
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
       validationSchema: configValidationSchema
-    }),
-    TrainingsModule
+    })
   ]
 })
 export class AppModule {}

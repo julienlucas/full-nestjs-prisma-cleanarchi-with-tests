@@ -10,7 +10,8 @@ async function bootstrap() {
   const port = process.env.PORT;
 
   const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule, new FastifyAdapter()
+    AppModule,
+    new FastifyAdapter()
   );
   const options = new DocumentBuilder()
     .setTitle('E-learning courses API')

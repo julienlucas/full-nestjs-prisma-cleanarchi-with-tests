@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from "@infrastructure/prisma/prisma.service";
 import { AuthUsecase } from '@domain/usecases/auth.usecase';
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
-import { UsersRepository } from '@infrastructure/repositories/users/users.repository';
+import { UsersPrismaRepository } from '@infrastructure/prisma/users.prisma.repository';
 import { JwtStrategy } from '@infrastructure/repositories/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { PrismaModule } from '@infrastructure/prisma/prisma.module';
@@ -31,7 +31,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     JwtStrategy,
     {
       provide: 'UsersRepository',
-      useClass: UsersRepository,
+      useClass: UsersPrismaRepository,
     },
     {
       provide: 'prisma',

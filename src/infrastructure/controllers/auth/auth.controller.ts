@@ -1,9 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponseType } from '@infrastructure/common/swagger.decorator';
+import { BearerTokenPresenter, UserPresenter } from '@infrastructure/presenters/user.presenter';
 import { AuthCrendentialsDto } from '@infrastructure/repositories/users/users.dto';
 import { AuthUsecase } from '@domain/usecases/auth.usecase';
 import { User } from '@domain/models/user.interface';
-import { BearerTokenPresenter } from '@infrastructure/presenters/user.presenter';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -23,10 +24,13 @@ export class AuthController {
     type: AuthCrendentialsDto,
     description: 'Json structure for user object',
   })
+  @ApiResponseType(UserPresenter, true)
   @ApiOperation({ description: 'signup' })
   @ApiResponse({ status: 200 })
-  signUp(@Body() authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
-    return this.AuthUsecase.signUp(authCrendentialsDto);
+  async signUp(@Body() authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
+    const user = await this.AuthUsecase.signUp(authCrendentialsDto);
+
+    return new UserPresenter(user);
   }
 
   @Post('/signin')
@@ -37,7 +41,9 @@ export class AuthController {
   })
   @ApiOperation({ description: 'login' })
   @ApiResponse({ status: 200, type: BearerTokenPresenter, isArray: false })
-  signIn(@Body() authCrendentialsDto: AuthCrendentialsDto): Promise<{ accessToken: string }> {
-    return this.AuthUsecase.signIn(authCrendentialsDto);
+  async signIn(@Body() authCrendentialsDto: AuthCrendentialsDto): Promise<any> {
+    const accessToken = await this.AuthUsecase.signIn(authCrendentialsDto);
+
+    return new BearerTokenPresenter(accessToken);
   }
 }
