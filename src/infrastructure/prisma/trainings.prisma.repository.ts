@@ -12,7 +12,7 @@ export class TrainingsPrismaRepository implements TrainingsRepository {
 
   constructor(
     @Inject('prisma')
-    private prisma
+    private readonly prisma
   ) {}
 
   async getTrainings(filterDto: GetTrainingsFilterDto, user: User): Promise<Training[]> {

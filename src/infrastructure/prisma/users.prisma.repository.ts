@@ -11,7 +11,7 @@ export class UsersPrismaRepository implements UsersRepository {
 
   constructor(
     @Inject('prisma')
-    private prisma
+    private readonly prisma,
   ) {}
 
   async signIn(authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
