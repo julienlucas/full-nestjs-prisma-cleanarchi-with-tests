@@ -10,24 +10,11 @@ import { User } from '@domain/models/user.interface';
 export class AuthUsecase {
   private logger = new Logger();
 
-  // constructor(
-  //   @Inject('UsersRepository')
-  //   private readonly usersRepository: UsersRepository,
-  //   private readonly jwtService: JwtService
-  // ) {}
-
   constructor(
     @Inject('UsersRepository')
     private readonly usersRepository: UsersRepository,
     private readonly jwtService: JwtService
   ) {}
-
-  // usersRepository;
-
-  // constructor() {
-  //   // super()
-  //   this.usersRepository = new UsersRepository()
-  // }
 
   async signUp(authCrendentialsDto: AuthCrendentialsDto): Promise<User> {
     const result = await this.usersRepository.createUser(authCrendentialsDto);
