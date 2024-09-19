@@ -4,19 +4,12 @@ import { TrainingsController } from '@infrastructure/controllers/trainings/train
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
 import { PassportModule } from '@nestjs/passport';
+import { userMock } from '@tests/mocks/mocks';
+import { faker } from '@faker-js/faker';
 
 describe('Tests of Training usecases', () => {
   let trainingsController: TrainingsController;
   let trainingsUsecaseSpy: TrainingsUsecase;
-
-  const mockUser = {
-    id: trainingsFakeData[0].authorId,
-    username: 'Michael',
-    password: 'Test password',
-    email: "michael@jackson.com",
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
 
   const TrainingsRepository = {
     provide: TrainingsUsecase,
@@ -50,7 +43,7 @@ describe('Tests of Training usecases', () => {
     const mockFilterDto = { search: "" };
 
     //Act
-    trainingsController.getTrainings(mockFilterDto, mockUser);
+    trainingsController.getTrainings(mockFilterDto, userMock);
     //Assert
     expect(trainingsUsecaseSpy.getTrainings).toHaveBeenCalled();
   });
@@ -60,22 +53,22 @@ describe('Tests of Training usecases', () => {
     const trainingId = trainingsFakeData[0].id
 
     //Act
-    trainingsController.getTrainingById(trainingId, mockUser);
+    trainingsController.getTrainingById(trainingId, userMock);
     //Assert
-    expect(trainingsUsecaseSpy.getTrainingById).toHaveBeenCalledWith(trainingId, mockUser);
+    expect(trainingsUsecaseSpy.getTrainingById).toHaveBeenCalledWith(trainingId, userMock);
   });
 
   test('TrainingsController calling createTraining method', async () => {
     //Arrange
     const training = {
-      title: "Un titre",
-      description: "Une description"
+      title: faker.string.alphanumeric(),
+      description: faker.string.alphanumeric()
     };
 
     //Act
-    trainingsController.createTraining(training, mockUser);
+    trainingsController.createTraining(training, userMock);
     //Assert
-    expect(trainingsUsecaseSpy.createTraining).toHaveBeenCalledWith(training, mockUser);
+    expect(trainingsUsecaseSpy.createTraining).toHaveBeenCalledWith(training, userMock);
   });
 
   test('TrainingsController calling deleteTraining method', async () => {
@@ -83,23 +76,23 @@ describe('Tests of Training usecases', () => {
     const trainingId = trainingsFakeData[0].id
 
     //Act
-    trainingsController.deleteTraining(trainingId, mockUser);
+    trainingsController.deleteTraining(trainingId, userMock);
     //Assert
-    expect(trainingsUsecaseSpy.deleteTraining).toHaveBeenCalledWith(trainingId, mockUser);
+    expect(trainingsUsecaseSpy.deleteTraining).toHaveBeenCalledWith(trainingId, userMock);
   });
 
   test('TrainingsController calling updateTraining method', async () => {
     //Arrange
     let trainingId = trainingsFakeData[0].id;
     const training = {
-      title: "Nouveau titre",
-      description: "Nouvelle description",
+      title: faker.string.alphanumeric(),
+      description: faker.string.alphanumeric()
     };
 
     //Act
-    trainingsController.updateTraining(training, trainingId, mockUser);
+    trainingsController.updateTraining(training, trainingId, userMock);
 
     //Assert
-    expect(trainingsUsecaseSpy.updateTraining).toHaveBeenCalledWith(training, trainingId, mockUser);
+    expect(trainingsUsecaseSpy.updateTraining).toHaveBeenCalledWith(training, trainingId, userMock);
   });
 });

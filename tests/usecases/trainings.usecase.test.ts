@@ -3,15 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
-
-const mockUser = {
-  id: trainingsFakeData[0].authorId,
-  username: 'Michael',
-  password: 'Test password',
-  email: "michael@jackson.com",
-  createdAt: new Date(),
-  updatedAt: new Date()
-};
+import { userMock } from "@tests/mocks/mocks";
 
 describe('Tests of Training usecases', () => {
   let trainingsUsecase: TrainingsUsecase;
@@ -52,7 +44,7 @@ describe('Tests of Training usecases', () => {
     getTrainingsMock.mockResolvedValue(trainings);
 
     //Assert
-    const result = await trainingsUsecase.getTrainings(mockFilterDto, mockUser);
+    const result = await trainingsUsecase.getTrainings(mockFilterDto, userMock);
     expect(result).toBe(trainings);
   });
 
@@ -62,7 +54,7 @@ describe('Tests of Training usecases', () => {
     getTrainingByIdMock.mockResolvedValue(trainingId);
 
     //Assert
-    const result = await trainingsUsecase.getTrainingById(trainingId, mockUser);
+    const result = await trainingsUsecase.getTrainingById(trainingId, userMock);
     expect(result).toBe(trainingId);
   });
 
@@ -75,7 +67,7 @@ describe('Tests of Training usecases', () => {
     createTrainingMock.mockResolvedValue(newTraining);
 
     //Assert
-    const result = await trainingsUsecase.createTraining(newTraining, mockUser);
+    const result = await trainingsUsecase.createTraining(newTraining, userMock);
     expect(result).toBe(newTraining);
   });
 
@@ -85,7 +77,7 @@ describe('Tests of Training usecases', () => {
     deleteTrainingMock.mockResolvedValue(trainingId);
 
     //Assert
-    const result = await trainingsUsecase.deleteTraining(trainingId, mockUser);
+    const result = await trainingsUsecase.deleteTraining(trainingId, userMock);
     expect(result).toBe(trainingId);
   });
 
@@ -99,7 +91,11 @@ describe('Tests of Training usecases', () => {
     updateTrainingMock.mockResolvedValue(updateTraining);
 
     //Assert
-    const result = await trainingsUsecase.updateTraining(updateTraining, trainingId, mockUser);
+    const result = await trainingsUsecase.updateTraining(
+      updateTraining,
+      trainingId,
+      userMock
+    );
     expect(result).toBe(updateTraining);
   });
 });

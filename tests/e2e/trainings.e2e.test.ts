@@ -5,11 +5,12 @@ import { INestApplication } from '@nestjs/common';
 import { faker } from "@faker-js/faker";
 import { AppModule } from "@src/app.module";
 import { MIN_LENGTH_TITLE, MIN_LENGTH_DESCRIPTION } from '@domain/entities/training.entity';
+import { userMock } from '@tests/mocks/mocks';
 
 describe('Tests of Training usecases', () => {
   let app: INestApplication;
-  let accessToken: string;
-  let trainingId: string;
+  let accessToken;
+  let trainingId;
   let title = faker.string.alphanumeric(MIN_LENGTH_TITLE + 1);
   let description = faker.string.alphanumeric(MIN_LENGTH_DESCRIPTION + 1);
 
@@ -30,7 +31,7 @@ describe('Tests of Training usecases', () => {
   test('/trainings POST should create and return a training', async () => {
     const resultToken = await request(app.getHttpServer())
       .post('/auth/signin')
-      .send({ email: "hello@julienlucas.com", password: "superP4ssword#" })
+      .send({ email: userMock.email, password: userMock.password })
       .expect(201);
 
     accessToken = JSON.parse(resultToken.text).accessToken;

@@ -1,7 +1,8 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
+import { userMock } from '@tests/mocks/mocks';
 import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
 import { TrainingsPrismaRepository } from "@infrastructure/prisma/trainings.prisma.repository";
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
@@ -12,15 +13,6 @@ import {
   MAX_LENGTH_TITLE,
   MIN_LENGTH_DESCRIPTION
 } from '@domain/entities/training.entity';
-
-const mockUser = {
-  id: trainingsFakeData[0].authorId,
-  username: 'Michael',
-  password: 'Test password',
-  email: "michael@jackson.com",
-  createdAt: new Date(),
-  updatedAt: new Date()
-};
 
 describe('Tests of Training usecases', () => {
   let trainingsRepository: TrainingsRepository;
@@ -70,7 +62,10 @@ describe('Tests of Training usecases', () => {
     findManyMock.mockResolvedValue(mockTrainings);
 
     //Assert
-    const result = await trainingsRepository.getTrainings(mockFilterDto, mockUser);
+    const result = await trainingsRepository.getTrainings(
+      mockFilterDto,
+      userMock
+    );
     expect(result).toBe(mockTrainings);
   });
 
@@ -93,7 +88,10 @@ describe('Tests of Training usecases', () => {
     createMock.mockResolvedValue(newTraining);
 
     //Assert
-    const result = await trainingsRepository.createTraining(newTraining, mockUser);
+    const result = await trainingsRepository.createTraining(
+      newTraining,
+      userMock
+    );
     expect(result).toBe(newTraining);
 
     //Arrange
@@ -104,7 +102,9 @@ describe('Tests of Training usecases', () => {
     createMock.mockResolvedValue(newTraining);
 
     //Assert
-    await expect(trainingsRepository.createTraining(newTraining, mockUser)).rejects.toThrow();
+    await expect(
+      trainingsRepository.createTraining(newTraining, userMock)
+    ).rejects.toThrow();
   });
 
   test('TrainingsRepository deleteTraining, should delete the right training', async () => {
@@ -121,13 +121,17 @@ describe('Tests of Training usecases', () => {
     //Arrange
     const trainingId = trainingsFakeData[2].id;
     const updateTraining = {
-      title: "Un nouveau titre",
-      description: "Une nouvelle description"
+      title: faker.string.alphanumeric(),
+      description: faker.string.alphanumeric()
     };
     updateMock.mockResolvedValue(updateTraining);
 
     //Assert
-    const result = await trainingsRepository.updateTraining(updateTraining, trainingId, mockUser);
+    const result = await trainingsRepository.updateTraining(
+      updateTraining,
+      trainingId,
+      userMock
+    );
     expect(result).toBe(updateTraining);
   });
 });

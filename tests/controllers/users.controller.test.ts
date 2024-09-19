@@ -13,7 +13,7 @@ describe('Tests of Training usecases', () => {
     provide: AuthUsecase,
     useFactory: () => ({
       signUp: vi.fn(() => {}),
-      signIn: vi.fn(() => ""),
+      signIn: vi.fn(() => {}),
     }),
   };
 

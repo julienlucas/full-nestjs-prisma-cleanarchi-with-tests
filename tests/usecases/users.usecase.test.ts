@@ -5,14 +5,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
 import { AuthUsecase } from '@domain/usecases/auth.usecase';
 import { JwtStrategy } from '@infrastructure/repositories/jwt.strategy';
+import { emailMock, passwordMock } from "@tests/mocks/mocks";
 
 describe('Tests of Training usecases', () => {
   let authUsecase: AuthUsecase;
 
   const userMock = {
-    email: "hello@julienlucas.com",
-    password: "superP4ssword#"
-  }
+    email: emailMock,
+    password: passwordMock
+  };
   let createUserMock = vi.fn();
   let signInMock = vi.fn();
 
