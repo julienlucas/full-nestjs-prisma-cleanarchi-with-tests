@@ -3,11 +3,10 @@ import { faker } from '@faker-js/faker';
 
 export const firstNameMock = faker.person.firstName();
 export const lastNameMock = faker.person.lastName();
-// export const passwordMock = faker.internet.password({
-//   pattern: new RegExp('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[\\]:;<>,.?/~_+-=|]).{8,32}$')
-// });
+export const passwordMock = faker.helpers.fromRegExp(
+  '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[\\]:;<>,.?/~_+-=|]).{8,32}$'
+);
 
-export const passwordMock = "superP4ssword#";
 export const emailMock = faker.internet.email({
   firstName: firstNameMock,
   lastName: lastNameMock,

@@ -26,6 +26,8 @@ export class AuthUsecase {
     const { email, password } = authCrendentialsDto;
     const user = await this.usersRepository.signIn(authCrendentialsDto);
 
+    this.logger.verbose(user);
+
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = { email };
       const accessToken: string = await this.jwtService.sign(payload);
