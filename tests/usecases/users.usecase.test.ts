@@ -83,10 +83,6 @@ describe('Tests of Training usecases', () => {
     const result = await authUsecase.signIn(userMock);
 
     //Assert
-    expect(result).toEqual(
-      expect.objectContaining({
-        accessToken: expect.any(String)
-      })
-    );
+    expect(result).toEqual(expect.any(String));
   });
 });

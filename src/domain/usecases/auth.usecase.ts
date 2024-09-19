@@ -2,7 +2,6 @@ import { Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/commo
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersRepository } from '@infrastructure/repositories/users/users.repository';
-import { UsersPrismaRepository } from '@infrastructure/prisma/users.prisma.repository';
 import { AuthCrendentialsDto } from '@infrastructure/repositories/users/users.dto';
 import { User } from '@domain/models/user.interface';
 

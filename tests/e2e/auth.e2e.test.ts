@@ -55,6 +55,7 @@ describe('Tests of Training usecases', () => {
       .expect(201);
 
     const expectedHash = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+
     const accessToken = JSON.parse(result.text).accessToken
     const hash = accessToken.substring(0, accessToken.indexOf("."));
 

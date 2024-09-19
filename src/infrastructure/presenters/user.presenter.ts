@@ -18,19 +18,19 @@ export class UserPresenter {
   password: string;
 
   constructor(user: User) {
-    this.id = user.id;
-    this.createdAt = user.createdAt;
-    this.updatedAt = user.updatedAt;
-    this.email = user.email;
-    this.password = user.password;
+    this.id = user?.id;
+    this.createdAt = user?.createdAt;
+    this.updatedAt = user?.updatedAt;
+    this.email = user?.email;
+    this.password = user?.password;
   }
 }
 
 export class BearerTokenPresenter {
   @ApiProperty()
-  accesstoken: string;
+  accessToken: string;
 
-  constructor(accesstoken: string) {
-    this.accesstoken = accesstoken;
+  constructor(accessToken: string) {
+    this.accessToken = accessToken;
   }
 }

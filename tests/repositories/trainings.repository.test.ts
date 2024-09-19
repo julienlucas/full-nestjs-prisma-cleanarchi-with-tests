@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
 import { faker } from "@faker-js/faker";
 import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
+import { TrainingsPrismaRepository } from "@infrastructure/prisma/trainings.prisma.repository";
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
@@ -53,7 +54,7 @@ describe('Tests of Training usecases', () => {
         TrainingsUsecase,
         {
           provide: 'TrainingsRepository',
-          useClass: TrainingsRepository
+          useClass: TrainingsPrismaRepository
         },
         PrismaProvider
       ],

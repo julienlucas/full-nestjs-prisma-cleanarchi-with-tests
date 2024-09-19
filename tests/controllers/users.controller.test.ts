@@ -13,27 +13,22 @@ describe('Tests of Training usecases', () => {
     provide: AuthUsecase,
     useFactory: () => ({
       signUp: vi.fn(() => {}),
-      signIn: vi.fn(() => '')
-    })
+      signIn: vi.fn(() => ""),
+    }),
   };
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-      ],
+      imports: [PassportModule.register({ defaultStrategy: "jwt" })],
       controllers: [AuthController],
-      providers: [
-        AuthUsecase,
-        AuthRepository
-      ],
+      providers: [AuthUsecase, AuthRepository],
     }).compile();
 
     authController = app.get<AuthController>(AuthController);
     authUsecaseSpy = app.get<AuthUsecase>(AuthUsecase);
-  })
+  });
 
-  test('AuthController calling signup', async () => {
+  test("AuthController calling signup", async () => {
     //Arrange
     const email = faker.string.alphanumeric(10);
     const password = faker.string.alphanumeric(10);
@@ -45,7 +40,7 @@ describe('Tests of Training usecases', () => {
     expect(authUsecaseSpy.signUp).toHaveBeenCalled();
   });
 
-    test('AuthController calling signup', async () => {
+  test("AuthController calling signup", async () => {
     //Arrange
     const email = faker.string.alphanumeric(10);
     const password = faker.string.alphanumeric(10);
