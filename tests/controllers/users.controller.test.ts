@@ -28,7 +28,7 @@ describe('Tests of Training usecases', () => {
     authUsecaseSpy = app.get<AuthUsecase>(AuthUsecase);
   });
 
-  test("AuthController calling signup", async () => {
+  test('AuthController calling signup', async () => {
     //Arrange
     const email = faker.string.alphanumeric(10);
     const password = faker.string.alphanumeric(10);
@@ -40,7 +40,7 @@ describe('Tests of Training usecases', () => {
     expect(authUsecaseSpy.signUp).toHaveBeenCalled();
   });
 
-  test("AuthController calling signup", async () => {
+  test('AuthController calling signup', async () => {
     //Arrange
     const email = faker.string.alphanumeric(10);
     const password = faker.string.alphanumeric(10);
