@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
-import { userMock } from "@tests/mocks/mocks";
+import { userMock } from '@tests/mocks/mocks';
 
 describe('Tests of Training usecases', () => {
   let trainingsUsecase: TrainingsUsecase;

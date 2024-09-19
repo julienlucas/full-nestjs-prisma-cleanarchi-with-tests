@@ -3,7 +3,7 @@ import { beforeAll, afterAll, describe, expect, test } from 'vitest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '@src/app.module';
-import { userMock, emailMock, passwordMock } from "@tests/mocks/mocks";
+import { userMock, emailMock, passwordMock } from '@tests/mocks/mocks';
 
 describe('Tests of Training usecases', () => {
   let app: INestApplication;

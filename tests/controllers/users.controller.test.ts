@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
 import { AuthUsecase } from '@domain/usecases/auth.usecase';
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
 describe('Tests of Training usecases', () => {
   let authController: AuthController;

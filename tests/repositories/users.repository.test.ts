@@ -5,7 +5,7 @@ import { UsersRepository } from '@infrastructure/repositories/users/users.reposi
 import { UsersPrismaRepository } from "@infrastructure/prisma/users.prisma.repository";
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
 import { AuthUsecase } from '@domain/usecases/auth.usecase';
-import { userMock } from "@tests/mocks/mocks";
+import { userMock } from '@tests/mocks/mocks';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 

@@ -5,7 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
 import { AuthUsecase } from '@domain/usecases/auth.usecase';
 import { JwtStrategy } from '@infrastructure/repositories/jwt.strategy';
-import { emailMock, passwordMock } from "@tests/mocks/mocks";
+import { emailMock, passwordMock } from '@tests/mocks/mocks';
 
 describe('Tests of Training usecases', () => {
   let authUsecase: AuthUsecase;
