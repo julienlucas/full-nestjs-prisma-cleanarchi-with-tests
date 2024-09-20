@@ -4,6 +4,7 @@ import { TrainingsController } from '@infrastructure/controllers/trainings/train
 import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
 import { userMock } from '@tests/mocks/mocks';
+import { faker } from "@faker-js/faker";
 
 describe('Tests of Training usecases', () => {
   let trainingsUsecase: TrainingsUsecase;
@@ -61,8 +62,8 @@ describe('Tests of Training usecases', () => {
   test('TrainingUsecase createTraining, should return the right training created', async () => {
     //Arrange
     const newTraining = {
-      title: "Un titre",
-      description: "Une description"
+      title: faker.string.alphanumeric(),
+      description: faker.string.alphanumeric()
     };
     createTrainingMock.mockResolvedValue(newTraining);
 
@@ -85,8 +86,8 @@ describe('Tests of Training usecases', () => {
     //Arrange
     const trainingId = trainingsFakeData[2].id;
     const updateTraining = {
-      title: "Un nouveau titre",
-      description: "Une nouvelle description"
+      title: faker.string.alphanumeric()
+      description: faker.string.alphanumeric(),
     };
     updateTrainingMock.mockResolvedValue(updateTraining);
 

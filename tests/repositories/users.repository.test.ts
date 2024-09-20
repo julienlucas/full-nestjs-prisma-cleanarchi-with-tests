@@ -45,12 +45,10 @@ describe('Tests of Users repositories', () => {
     usersRepository = app.get<UsersRepository>("UsersRepository");
   });
 
-  test("UsersRepository signUp should return an array of trainings", async () => {
-    //Act
+  test("UsersRepository signUp should return email and hashedPassword", async () => {
+    //Arrange
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-
-    //Arrange
     createMock.mockResolvedValue({ email, password: hashedPassword });
 
     //Assert
@@ -58,7 +56,7 @@ describe('Tests of Users repositories', () => {
     expect(result).toStrictEqual({ email, password: hashedPassword });
   });
 
-  test("UsersRepository signIn should return the right training", async () => {
+  test("UsersRepository signIn should return the user", async () => {
     //Arrange
     const mockAuthenticationUser = { email, password };
     findUniqueMock.mockResolvedValue(mockAuthenticationUser);
