@@ -86,7 +86,7 @@ describe('Tests of Training usecases', () => {
     //Arrange
     const trainingId = trainingsFakeData[2].id;
     const updateTraining = {
-      title: faker.string.alphanumeric()
+      title: faker.string.alphanumeric(),
       description: faker.string.alphanumeric(),
     };
     updateTrainingMock.mockResolvedValue(updateTraining);
