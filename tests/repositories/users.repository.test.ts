@@ -9,7 +9,7 @@ import { userMock } from '@tests/mocks/mocks';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-describe('Tests of Training usecases', () => {
+describe('Tests of Users repositories', () => {
   let usersRepository: UsersRepository;
 
   const email = userMock.email;
@@ -24,8 +24,8 @@ describe('Tests of Training usecases', () => {
         user: {
           findUnique: findUniqueMock,
           create: createMock,
-        }
-      }
+        },
+      },
     };
 
     const app: TestingModule = await Test.createTestingModule({
@@ -42,10 +42,10 @@ describe('Tests of Training usecases', () => {
       ],
     }).compile();
 
-    usersRepository = app.get<UsersRepository>('UsersRepository');
-  })
+    usersRepository = app.get<UsersRepository>("UsersRepository");
+  });
 
-  test('UsersRepository signUp should return an array of trainings', async () => {
+  test("UsersRepository signUp should return an array of trainings", async () => {
     //Act
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -58,7 +58,7 @@ describe('Tests of Training usecases', () => {
     expect(result).toStrictEqual({ email, password: hashedPassword });
   });
 
-  test('UsersRepository signIn should return the right training', async () => {
+  test("UsersRepository signIn should return the right training", async () => {
     //Arrange
     const mockAuthenticationUser = { email, password };
     findUniqueMock.mockResolvedValue(mockAuthenticationUser);

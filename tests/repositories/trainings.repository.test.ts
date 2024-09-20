@@ -14,7 +14,7 @@ import {
   MIN_LENGTH_DESCRIPTION
 } from '@domain/entities/training.entity';
 
-describe('Tests of Training usecases', () => {
+describe('Tests of Training repositories', () => {
   let trainingsRepository: TrainingsRepository;
 
   let findManyMock = vi.fn();
@@ -25,7 +25,7 @@ describe('Tests of Training usecases', () => {
 
   beforeAll(async () => {
     const PrismaProvider = {
-      provide: 'prisma',
+      provide: "prisma",
       useValue: {
         training: {
           findMany: findManyMock,
@@ -33,29 +33,27 @@ describe('Tests of Training usecases', () => {
           create: createMock,
           update: updateMock,
           delete: deleteMock,
-        }
-      }
+        },
+      },
     };
 
     const app: TestingModule = await Test.createTestingModule({
-      imports: [
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-      ],
+      imports: [PassportModule.register({ defaultStrategy: "jwt" })],
       controllers: [TrainingsController],
       providers: [
         TrainingsUsecase,
         {
-          provide: 'TrainingsRepository',
-          useClass: TrainingsPrismaRepository
+          provide: "TrainingsRepository",
+          useClass: TrainingsPrismaRepository,
         },
-        PrismaProvider
+        PrismaProvider,
       ],
     }).compile();
 
-    trainingsRepository = app.get<TrainingsRepository>('TrainingsRepository');
-  })
+    trainingsRepository = app.get<TrainingsRepository>("TrainingsRepository");
+  });
 
-  test('TrainingsRepository getTrainings should return an array of trainings', async () => {
+  test("TrainingsRepository getTrainings should return an array of trainings", async () => {
     //Arrange
     const mockTrainings = trainingsFakeData;
     const mockFilterDto = { search: "" };
@@ -69,7 +67,7 @@ describe('Tests of Training usecases', () => {
     expect(result).toBe(mockTrainings);
   });
 
-  test('TrainingsRepository getTrainingById, should return the right training', async () => {
+  test("TrainingsRepository getTrainingById, should return the right training", async () => {
     //Arrange
     const mockTraining = trainingsFakeData[2];
     findUniqueMock.mockResolvedValue(mockTraining);
@@ -79,11 +77,11 @@ describe('Tests of Training usecases', () => {
     expect(result).toBe(mockTraining);
   });
 
-  test('TrainingsRepository createTraining, should return the right training created', async () => {
+  test("TrainingsRepository createTraining, should return the right training created", async () => {
     //Arrange
     let newTraining = {
       title: faker.string.alphanumeric(MIN_LENGTH_TITLE + 1),
-      description: ""
+      description: "",
     };
     createMock.mockResolvedValue(newTraining);
 
@@ -107,7 +105,7 @@ describe('Tests of Training usecases', () => {
     ).rejects.toThrow();
   });
 
-  test('TrainingsRepository deleteTraining, should delete the right training', async () => {
+  test("TrainingsRepository deleteTraining, should delete the right training", async () => {
     //Arrange
     const trainingId = trainingsFakeData[3].id;
     deleteMock.mockResolvedValue(trainingId);
@@ -117,12 +115,12 @@ describe('Tests of Training usecases', () => {
     expect(result).toBe(trainingId);
   });
 
-  test('TrainingsRepository updateTraining, should delete the right training', async () => {
+  test("TrainingsRepository updateTraining, should delete the right training", async () => {
     //Arrange
     const trainingId = trainingsFakeData[2].id;
     const updateTraining = {
       title: faker.string.alphanumeric(),
-      description: faker.string.alphanumeric()
+      description: faker.string.alphanumeric(),
     };
     updateMock.mockResolvedValue(updateTraining);
 
