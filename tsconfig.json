@@ -21,6 +21,7 @@
       "@src/*": ["./src/*"],
       "@domain/*": ["./src/domain/*"],
       "@infrastructure/*": ["./src/infrastructure/*"],
+      "@utils/*": ["./src/utils/*"],
       "@tests/*": ["./tests/*"],
     }
   }

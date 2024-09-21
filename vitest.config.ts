@@ -4,19 +4,20 @@ import path from 'path';
 
 export default defineConfig({
   test: {
-    include: ['**/*.test.ts', '**/*.e2e-test.ts'],
+    include: ["**/*.test.ts", "**/*.e2e-test.ts"],
     globals: true,
     alias: {
-      '@src': path.resolve(__dirname, 'src'),
-      '@domain': path.resolve(__dirname, 'src/domain'),
-      '@infrastructure': path.resolve(__dirname, 'src/infrastructure'),
-      '@tests': path.resolve(__dirname, 'tests'),
+      "@src": path.resolve(__dirname, "src"),
+      "@domain": path.resolve(__dirname, "src/domain"),
+      "@infrastructure": path.resolve(__dirname, "src/infrastructure"),
+      "@utils": path.resolve(__dirname, "src/utils"),
+      "@tests": path.resolve(__dirname, "tests"),
     },
-    root: './',
+    root: "./",
   },
   plugins: [
     swc.vite({
-      module: { type: 'es6' }
-    })
+      module: { type: "es6" },
+    }),
   ],
 });

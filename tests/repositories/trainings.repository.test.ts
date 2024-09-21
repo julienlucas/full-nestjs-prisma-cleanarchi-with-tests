@@ -59,7 +59,7 @@ describe('Tests of Training repositories', () => {
     const mockFilterDto = { search: "" };
     findManyMock.mockResolvedValue(mockTrainings);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsRepository.getTrainings(
       mockFilterDto,
       userMock
@@ -72,7 +72,7 @@ describe('Tests of Training repositories', () => {
     const mockTraining = trainingsFakeData[2];
     findUniqueMock.mockResolvedValue(mockTraining);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsRepository.getTrainingById(mockTraining.id);
     expect(result).toBe(mockTraining);
   });
@@ -85,7 +85,7 @@ describe('Tests of Training repositories', () => {
     };
     createMock.mockResolvedValue(newTraining);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsRepository.createTraining(
       newTraining,
       userMock
@@ -99,7 +99,7 @@ describe('Tests of Training repositories', () => {
     };
     createMock.mockResolvedValue(newTraining);
 
-    //Assert
+    //Act & Assert
     await expect(
       trainingsRepository.createTraining(newTraining, userMock)
     ).rejects.toThrow();
@@ -110,12 +110,12 @@ describe('Tests of Training repositories', () => {
     const trainingId = trainingsFakeData[3].id;
     deleteMock.mockResolvedValue(trainingId);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsRepository.deleteTraining(trainingId);
     expect(result).toBe(trainingId);
   });
 
-  test("TrainingsRepository updateTraining, should delete the right training", async () => {
+  test("TrainingsRepository updateTraining, should update the right training", async () => {
     //Arrange
     const trainingId = trainingsFakeData[2].id;
     const updateTraining = {
@@ -124,7 +124,7 @@ describe('Tests of Training repositories', () => {
     };
     updateMock.mockResolvedValue(updateTraining);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsRepository.updateTraining(
       updateTraining,
       trainingId,

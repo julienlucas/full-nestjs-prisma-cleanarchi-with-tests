@@ -62,10 +62,8 @@ describe('Tests of Training usecases', () => {
     //Arrange
     createUserMock.mockResolvedValue(userMock);
 
-    //Act
+    //Act & Assert
     const result = await authUsecase.signUp(userMock);
-
-    //Assert
     expect(result).toBe(userMock);
   });
 
@@ -73,13 +71,11 @@ describe('Tests of Training usecases', () => {
     //Arrange
     signInMock.mockResolvedValue({
       ...userMock,
-      password: '$2b$10$Hl.Q/auDp7Dcjx8/cmLXie/ZruMjypbKMJBvo94mcDzM0jYaWzqkm'
+      password: "$2b$10$Hl.Q/auDp7Dcjx8/cmLXie/ZruMjypbKMJBvo94mcDzM0jYaWzqkm",
     });
 
-    //Act
+    //Act & Assert
     const result = await authUsecase.signIn(userMock);
-
-    //Assert
     expect(result).toEqual(expect.any(String));
   });
 });

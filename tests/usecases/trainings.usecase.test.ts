@@ -44,7 +44,7 @@ describe('Tests of Training usecases', () => {
     const trainings = trainingsFakeData;
     getTrainingsMock.mockResolvedValue(trainings);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsUsecase.getTrainings(mockFilterDto, userMock);
     expect(result).toBe(trainings);
   });
@@ -54,7 +54,7 @@ describe('Tests of Training usecases', () => {
     const trainingId = trainingsFakeData[2].id;
     getTrainingByIdMock.mockResolvedValue(trainingId);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsUsecase.getTrainingById(trainingId, userMock);
     expect(result).toBe(trainingId);
   });
@@ -63,11 +63,11 @@ describe('Tests of Training usecases', () => {
     //Arrange
     const newTraining = {
       title: faker.string.alphanumeric(),
-      description: faker.string.alphanumeric()
+      description: faker.string.alphanumeric(),
     };
     createTrainingMock.mockResolvedValue(newTraining);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsUsecase.createTraining(newTraining, userMock);
     expect(result).toBe(newTraining);
   });
@@ -77,7 +77,7 @@ describe('Tests of Training usecases', () => {
     const trainingId = trainingsFakeData[3].id;
     deleteTrainingMock.mockResolvedValue(trainingId);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsUsecase.deleteTraining(trainingId, userMock);
     expect(result).toBe(trainingId);
   });
@@ -91,7 +91,7 @@ describe('Tests of Training usecases', () => {
     };
     updateTrainingMock.mockResolvedValue(updateTraining);
 
-    //Assert
+    //Act & Assert
     const result = await trainingsUsecase.updateTraining(
       updateTraining,
       trainingId,

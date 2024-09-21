@@ -51,7 +51,7 @@ describe('Tests of Users repositories', () => {
     const hashedPassword = await bcrypt.hash(password, salt);
     createMock.mockResolvedValue({ email, password: hashedPassword });
 
-    //Assert
+    //Act & Assert
     const result = await usersRepository.createUser({ email, password });
     expect(result).toStrictEqual({ email, password: hashedPassword });
   });
@@ -61,7 +61,7 @@ describe('Tests of Users repositories', () => {
     const mockAuthenticationUser = { email, password };
     findUniqueMock.mockResolvedValue(mockAuthenticationUser);
 
-    //Assert
+    //Act & Assert
     const result = await usersRepository.signIn(mockAuthenticationUser);
     expect(result).toBe(mockAuthenticationUser);
   });
