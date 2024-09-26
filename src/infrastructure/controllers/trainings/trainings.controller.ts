@@ -19,6 +19,7 @@ import { ApiResponseType } from '@infrastructure/common/swagger.decorator';
 import { TrainingPresenter } from '@adapters/presenters/training.presenter';
 import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
 import { TrainingDto, GetTrainingsFilterDto } from '@usecases/trainings/trainings.dto';
+import { TrainingsControllerAdapter } from '@adapters/controllers/trainings.controller';
 import { Training } from '@domain/models/training.interface';
 import { User } from '@domain/models/user.interface';
 
@@ -27,7 +28,7 @@ import { User } from '@domain/models/user.interface';
 @ApiResponse({ status: 500, description: 'Internal error' })
 @ApiExtraModels(TrainingPresenter)
 @UseGuards(AuthGuard())
-export class TrainingsController {
+export class TrainingsController implements TrainingsControllerAdapter {
   private logger = new Logger();
 
   constructor(

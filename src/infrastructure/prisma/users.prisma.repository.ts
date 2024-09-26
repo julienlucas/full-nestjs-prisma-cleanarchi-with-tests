@@ -1,12 +1,12 @@
 import { ConflictException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { AuthCrendentialsDto } from '@adapters/repositories/users/users.dto';
-import { UsersRepository } from '@adapters/repositories/users/users.repository';
+import { AuthCrendentialsDto } from '@usecases/users/users.dto';
+import { UsersRepositoryAdapter } from '@adapters/repositories/users/users.repository';
 import { User } from '@domain/models/user.interface';
 import { Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UsersPrismaRepository implements UsersRepository {
+export class UsersPrismaRepository implements UsersRepositoryAdapter {
   private logger = new Logger('UsersRepository', { timestamp: true });
 
   constructor(

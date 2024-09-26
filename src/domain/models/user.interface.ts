@@ -9,5 +9,5 @@ export class User implements UserEntity {
 }
 
 export class BearerToken {
-  token: string;
+  accessToken: string;
 }

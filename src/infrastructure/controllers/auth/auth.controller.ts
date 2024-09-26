@@ -4,7 +4,8 @@ import { ApiResponseType } from '@infrastructure/common/swagger.decorator';
 import { BearerTokenPresenter, UserPresenter } from '@adapters/presenters/user.presenter';
 import { AuthCrendentialsDto } from '@usecases/users/users.dto';
 import { AuthUsecase } from '@usecases/users/users.usecase';
-import { User } from '@domain/models/user.interface';
+import { User, BearerToken } from '@domain/models/user.interface';
+import { AuthControllerAdapter} from '@adapters/controllers/auth.controller';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -14,7 +15,7 @@ import { User } from '@domain/models/user.interface';
 })
 @ApiResponse({ status: 500, description: 'Internal error' })
 @ApiExtraModels(User)
-export class AuthController {
+export class AuthController implements AuthControllerAdapter {
   constructor(
     private readonly AuthUsecase: AuthUsecase
   ) {}
@@ -41,7 +42,7 @@ export class AuthController {
   })
   @ApiOperation({ description: 'login' })
   @ApiResponse({ status: 200, type: BearerTokenPresenter, isArray: false })
-  async signIn(@Body() authCrendentialsDto: AuthCrendentialsDto): Promise<any> {
+  async signIn(@Body() authCrendentialsDto: AuthCrendentialsDto): Promise<BearerToken> {
     const accessToken = await this.AuthUsecase.signIn(authCrendentialsDto);
 
     return new BearerTokenPresenter(accessToken);
