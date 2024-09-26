@@ -1,19 +1,15 @@
-import {
-  Inject,
-  Injectable,
-  Logger
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Training } from '@domain/models/training.interface';
-import { TrainingDto, GetTrainingsFilterDto } from './trainings.dto';
+import { TrainingDto, GetTrainingsFilterDto } from '@usecases/trainings/trainings.dto';
 import { User } from '@domain/models/user.interface';
 
 @Injectable()
 export class TrainingsUsecase {
-  private logger = new Logger();
-
   constructor(
     @Inject('TrainingsRepository')
-    private readonly trainingsRepository
+    private readonly trainingsRepository,
+    @Inject('Logger')
+    private readonly logger,
   ) {}
 
   async getTrainings(filterDto?: GetTrainingsFilterDto, user?: User): Promise<Training[]> {

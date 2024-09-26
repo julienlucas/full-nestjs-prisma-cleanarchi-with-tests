@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtModule } from '@nestjs/jwt';
+import { Logger } from '@nestjs/common';
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
 import { AuthUsecase } from '@usecases/users/users.usecase';
 import { JwtStrategy } from '@adapters/repositories/jwt.strategy';
@@ -55,6 +56,10 @@ describe('Tests of Training usecases', () => {
       providers: [
         JwtServiceProvider,
         JwtStrategyProvider,
+        {
+          provide: 'Logger',
+          useClass: Logger,
+        },
         {
           provide: 'AuthUsecase',
           useClass: AuthUsecase,

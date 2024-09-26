@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Logger } from '@nestjs/common';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
@@ -30,6 +31,10 @@ describe('Tests of Training usecases', () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [TrainingsController],
       providers: [
+        {
+          provide: 'Logger',
+          useClass: Logger,
+        },
         {
           provide: 'TrainingsUsecase',
           useClass: TrainingsUsecase

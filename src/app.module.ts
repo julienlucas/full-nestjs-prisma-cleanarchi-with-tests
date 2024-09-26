@@ -13,7 +13,7 @@ import { PrismaModule } from '@infrastructure/prisma/prisma.module';
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
       validationSchema: configValidationSchema
-    })
+    }),
   ]
 })
 export class AppModule {}
