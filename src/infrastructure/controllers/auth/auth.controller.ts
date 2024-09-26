@@ -1,9 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiResponseType } from '@infrastructure/common/swagger.decorator';
 import { BearerTokenPresenter, UserPresenter } from '@adapters/presenters/user.presenter';
 import { AuthCrendentialsDto } from '@usecases/users/users.dto';
-import { AuthUsecase } from '@usecases/users/users.usecase';
 import { User, BearerToken } from '@domain/models/user.interface';
 import { AuthControllerAdapter} from '@adapters/controllers/auth.controller';
 
@@ -17,7 +16,8 @@ import { AuthControllerAdapter} from '@adapters/controllers/auth.controller';
 @ApiExtraModels(User)
 export class AuthController implements AuthControllerAdapter {
   constructor(
-    private readonly AuthUsecase: AuthUsecase
+    @Inject('AuthUsecase')
+    private readonly AuthUsecase
   ) {}
 
   @Post('/signup')

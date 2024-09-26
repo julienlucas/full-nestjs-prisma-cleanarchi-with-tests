@@ -1,6 +1,6 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { TrainingDto, GetTrainingsFilterDto } from '@usecases/trainings/trainings.dto';
-import { TrainingsRepositoryAdapter } from '@adapters/repositories/trainings/trainings.repository';
+import { TrainingsRepositoryAdapter } from '@adapters/repositories/trainings.repository';
 import { TrainingEntity } from '@domain/entities/training.entity';
 import { Training } from '@domain/models/training.interface';
 import { User } from '@domain/models/user.interface';

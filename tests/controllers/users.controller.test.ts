@@ -4,28 +4,37 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
 import { AuthUsecase } from '@usecases/users/users.usecase';
 import { faker } from '@faker-js/faker';
+import { JwtService } from '@nestjs/jwt';
 
 describe('Tests of Training usecases', () => {
   let authController: AuthController;
   let authUsecaseSpy: AuthUsecase;
 
   const AuthRepository = {
-    provide: AuthUsecase,
+    provide: 'UsersRepository',
     useFactory: () => ({
       signUp: vi.fn(() => {}),
       signIn: vi.fn(() => {}),
     }),
   };
 
+  const AuthUsecaseProvider = {
+    provide: 'AuthUsecase',
+    useFactory: () => ({
+      signUp: vi.fn(() => {}),
+      signIn: vi.fn(() => {}),
+    })
+  };
+
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [PassportModule.register({ defaultStrategy: "jwt" })],
       controllers: [AuthController],
-      providers: [AuthUsecase, AuthRepository],
+      providers: [JwtService, AuthUsecaseProvider, AuthRepository]
     }).compile();
 
     authController = app.get<AuthController>(AuthController);
-    authUsecaseSpy = app.get<AuthUsecase>(AuthUsecase);
+    authUsecaseSpy = app.get<AuthUsecase>('AuthUsecase');
   });
 
   test('AuthController calling signup', async () => {

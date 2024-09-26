@@ -22,6 +22,11 @@ describe('Tests of Training usecases', () => {
       }
     };
 
+    const AuthUsecaseProvider = {
+      provide: 'AuthUsecase',
+      useClass: AuthUsecase,
+    };
+
     const JwtServiceProvider = {
       provide: JwtStrategy,
       useValue: {
@@ -50,12 +55,15 @@ describe('Tests of Training usecases', () => {
       providers: [
         JwtServiceProvider,
         JwtStrategyProvider,
-        AuthUsecase,
+        {
+          provide: 'AuthUsecase',
+          useClass: AuthUsecase,
+        },
         UsersRepositoryProvider
       ]
     }).compile();
 
-    authUsecase = app.get<AuthUsecase>(AuthUsecase);
+    authUsecase = app.get<AuthUsecase>('AuthUsecase');
   })
 
   test('AuthUsecase signUp should return user', async () => {

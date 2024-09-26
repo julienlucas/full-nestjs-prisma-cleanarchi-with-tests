@@ -22,20 +22,28 @@ describe('Tests of Training usecases', () => {
     })
   };
 
+  const TrainingsUsecaseProvider = {
+    provide: 'TrainingsUsecase',
+    useFactory: () => ({
+      getTrainings: vi.fn(() => []),
+      getTrainingById: vi.fn(() => []),
+      createTraining: vi.fn(() => []),
+      deleteTraining: vi.fn(() => []),
+      updateTraining: vi.fn(() => [])
+    })
+  };
+
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
       ],
       controllers: [TrainingsController],
-      providers: [
-        TrainingsUsecase,
-        TrainingsRepository
-      ],
+      providers: [TrainingsUsecaseProvider, TrainingsRepository],
     }).compile();
 
     trainingsController = app.get<TrainingsController>(TrainingsController);
-    trainingsUsecaseSpy = app.get<TrainingsUsecase>(TrainingsUsecase);
+    trainingsUsecaseSpy = app.get<TrainingsUsecase>('TrainingsUsecase');
   })
 
   test('TrainingsController calling getTrainings method', async () => {

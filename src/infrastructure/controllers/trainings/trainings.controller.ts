@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Logger,
   Param,
   Patch,
@@ -17,7 +18,6 @@ import { ApiBody, ApiTags, ApiResponse, ApiExtraModels } from '@nestjs/swagger';
 import { GetUser } from '@infrastructure/common/user.decorator';
 import { ApiResponseType } from '@infrastructure/common/swagger.decorator';
 import { TrainingPresenter } from '@adapters/presenters/training.presenter';
-import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
 import { TrainingDto, GetTrainingsFilterDto } from '@usecases/trainings/trainings.dto';
 import { TrainingsControllerAdapter } from '@adapters/controllers/trainings.controller';
 import { Training } from '@domain/models/training.interface';
@@ -32,7 +32,8 @@ export class TrainingsController implements TrainingsControllerAdapter {
   private logger = new Logger();
 
   constructor(
-    private readonly TrainingsUsecase: TrainingsUsecase
+    @Inject('TrainingsUsecase')
+    private readonly TrainingsUsecase
   ) {}
 
   @Get()

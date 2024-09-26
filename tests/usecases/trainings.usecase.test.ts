@@ -30,12 +30,15 @@ describe('Tests of Training usecases', () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [TrainingsController],
       providers: [
-        TrainingsUsecase,
+        {
+          provide: 'TrainingsUsecase',
+          useClass: TrainingsUsecase
+        },
         TrainingsRepositoryProvider
       ],
     }).compile();
 
-    trainingsUsecase = app.get<TrainingsUsecase>(TrainingsUsecase);
+    trainingsUsecase = app.get<TrainingsUsecase>('TrainingsUsecase');
   })
 
   test('TrainingUsecase getTrainings, should return an array of trainings', async () => {

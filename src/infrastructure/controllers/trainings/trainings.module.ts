@@ -13,7 +13,10 @@ import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
   ],
   controllers: [TrainingsController],
   providers: [
-    TrainingsUsecase,
+    {
+      provide: 'TrainingsUsecase',
+      useClass: TrainingsUsecase
+    },
     {
       provide: 'TrainingsRepository',
       useClass: TrainingsPrismaRepository

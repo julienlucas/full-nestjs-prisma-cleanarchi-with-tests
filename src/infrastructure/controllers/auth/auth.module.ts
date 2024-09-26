@@ -27,8 +27,11 @@ import { PrismaModule } from '@infrastructure/prisma/prisma.module';
   ],
   controllers: [AuthController],
   providers: [
-    AuthUsecase,
     JwtStrategy,
+    {
+      provide: 'AuthUsecase',
+      useClass: AuthUsecase,
+    },
     {
       provide: 'UsersRepository',
       useClass: UsersPrismaRepository,

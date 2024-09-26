@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
 import { faker } from '@faker-js/faker';
 import { userMock } from '@tests/mocks/mocks';
-import { TrainingsRepository } from '@adapters/repositories/trainings/trainings.repository';
+import { TrainingsRepositoryAdapter } from '@adapters/repositories/trainings.repository';
 import { TrainingsPrismaRepository } from "@infrastructure/prisma/trainings.prisma.repository";
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
@@ -15,7 +15,7 @@ import {
 } from '@domain/entities/training.entity';
 
 describe('Tests of Training repositories', () => {
-  let trainingsRepository: TrainingsRepository;
+  let trainingsRepository: TrainingsRepositoryAdapter;
 
   let findManyMock = vi.fn();
   let findUniqueMock = vi.fn();
@@ -41,7 +41,10 @@ describe('Tests of Training repositories', () => {
       imports: [PassportModule.register({ defaultStrategy: "jwt" })],
       controllers: [TrainingsController],
       providers: [
-        TrainingsUsecase,
+        {
+          provide: 'TrainingsUsecase',
+          useClass: TrainingsUsecase
+        },
         {
           provide: "TrainingsRepository",
           useClass: TrainingsPrismaRepository,
@@ -50,7 +53,7 @@ describe('Tests of Training repositories', () => {
       ],
     }).compile();
 
-    trainingsRepository = app.get<TrainingsRepository>("TrainingsRepository");
+    trainingsRepository = app.get<TrainingsRepositoryAdapter>("TrainingsRepository");
   });
 
   test("TrainingsRepository getTrainings should return an array of trainings", async () => {

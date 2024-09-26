@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
-import { UsersRepository } from '@adapters/repositories/users/users.repository';
+import { UsersRepositoryAdapter } from '@adapters/repositories/users.repository';
 import { UsersPrismaRepository } from "@infrastructure/prisma/users.prisma.repository";
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
 import { AuthUsecase } from '@usecases/users/users.usecase';
@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 describe('Tests of Users repositories', () => {
-  let usersRepository: UsersRepository;
+  let usersRepository: UsersRepositoryAdapter;
 
   const email = userMock.email;
   const password = userMock.password;
@@ -33,7 +33,10 @@ describe('Tests of Users repositories', () => {
       controllers: [AuthController],
       providers: [
         JwtService,
-        AuthUsecase,
+        {
+          provide: 'AuthUsecase',
+          useClass: AuthUsecase
+        },
         {
           provide: "UsersRepository",
           useClass: UsersPrismaRepository,
@@ -42,7 +45,7 @@ describe('Tests of Users repositories', () => {
       ],
     }).compile();
 
-    usersRepository = app.get<UsersRepository>("UsersRepository");
+    usersRepository = app.get<UsersRepositoryAdapter>("UsersRepository");
   });
 
   test("UsersRepository signUp should return email and hashedPassword", async () => {

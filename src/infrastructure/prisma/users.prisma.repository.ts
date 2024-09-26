@@ -1,6 +1,6 @@
 import { ConflictException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AuthCrendentialsDto } from '@usecases/users/users.dto';
-import { UsersRepositoryAdapter } from '@adapters/repositories/users/users.repository';
+import { UsersRepositoryAdapter } from '@adapters/repositories/users.repository';
 import { User } from '@domain/models/user.interface';
 import { Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
