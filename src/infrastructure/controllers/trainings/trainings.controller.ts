@@ -16,10 +16,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiTags, ApiResponse, ApiExtraModels } from '@nestjs/swagger';
 import { GetUser } from '@infrastructure/common/user.decorator';
 import { ApiResponseType } from '@infrastructure/common/swagger.decorator';
-import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
-import { TrainingDto, GetTrainingsFilterDto } from '@infrastructure/repositories/trainings/trainings.dto';
+import { TrainingPresenter } from '@adapters/presenters/training.presenter';
+import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
+import { TrainingDto, GetTrainingsFilterDto } from '@usecases/trainings/trainings.dto';
 import { Training } from '@domain/models/training.interface';
-import { TrainingPresenter } from '@infrastructure/presenters/training.presenter';
 import { User } from '@domain/models/user.interface';
 
 @Controller('trainings')

@@ -1,9 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiResponseType } from '@infrastructure/common/swagger.decorator';
-import { BearerTokenPresenter, UserPresenter } from '@infrastructure/presenters/user.presenter';
-import { AuthCrendentialsDto } from '@infrastructure/repositories/users/users.dto';
-import { AuthUsecase } from '@domain/usecases/auth.usecase';
+import { BearerTokenPresenter, UserPresenter } from '@adapters/presenters/user.presenter';
+import { AuthCrendentialsDto } from '@usecases/users/users.dto';
+import { AuthUsecase } from '@usecases/users/users.usecase';
 import { User } from '@domain/models/user.interface';
 
 @Controller('auth')

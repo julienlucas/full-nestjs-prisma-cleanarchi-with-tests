@@ -3,10 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
 import { faker } from '@faker-js/faker';
 import { userMock } from '@tests/mocks/mocks';
-import { TrainingsRepository } from '@infrastructure/repositories/trainings/trainings.repository';
+import { TrainingsRepository } from '@adapters/repositories/trainings/trainings.repository';
 import { TrainingsPrismaRepository } from "@infrastructure/prisma/trainings.prisma.repository";
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
-import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
+import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
 import {
   MIN_LENGTH_TITLE,

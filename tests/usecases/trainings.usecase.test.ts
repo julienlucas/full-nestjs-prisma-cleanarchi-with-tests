@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
-import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
+import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
 import { userMock } from '@tests/mocks/mocks';
 import { faker } from "@faker-js/faker";

@@ -4,7 +4,7 @@ import {
   Logger
 } from '@nestjs/common';
 import { Training } from '@domain/models/training.interface';
-import { TrainingDto, GetTrainingsFilterDto } from '@infrastructure/repositories/trainings/trainings.dto';
+import { TrainingDto, GetTrainingsFilterDto } from './trainings.dto';
 import { User } from '@domain/models/user.interface';
 
 @Injectable()

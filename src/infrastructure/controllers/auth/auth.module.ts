@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from "@infrastructure/prisma/prisma.service";
-import { AuthUsecase } from '@domain/usecases/auth.usecase';
-import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
-import { UsersPrismaRepository } from '@infrastructure/prisma/users.prisma.repository';
-import { JwtStrategy } from '@infrastructure/repositories/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { PrismaModule } from '@infrastructure/prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthUsecase } from '@usecases/users/users.usecase';
+import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
+import { UsersPrismaRepository } from '@infrastructure/prisma/users.prisma.repository';
+import { JwtStrategy } from '@adapters/repositories/jwt.strategy';
+import { PrismaService } from "@infrastructure/prisma/prisma.service";
+import { PrismaModule } from '@infrastructure/prisma/prisma.module';
 
 @Module({
   imports: [

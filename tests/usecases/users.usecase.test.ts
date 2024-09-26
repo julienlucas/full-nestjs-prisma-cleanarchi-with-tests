@@ -3,8 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
-import { AuthUsecase } from '@domain/usecases/auth.usecase';
-import { JwtStrategy } from '@infrastructure/repositories/jwt.strategy';
+import { AuthUsecase } from '@usecases/users/users.usecase';
+import { JwtStrategy } from '@adapters/repositories/jwt.strategy';
 import { userMock } from '@tests/mocks/mocks';
 
 describe('Tests of Training usecases', () => {

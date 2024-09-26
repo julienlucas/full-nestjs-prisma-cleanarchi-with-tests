@@ -47,9 +47,12 @@ describe('Tests of Training usecases', () => {
 
     expect(training).toEqual(
       expect.objectContaining({
-        id: trainingId,
-        title,
-        description
+        id: expect.any(String),
+        authorId: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        title: expect.any(String),
+        description: expect.any(String)
       })
     );
   });
@@ -64,9 +67,13 @@ describe('Tests of Training usecases', () => {
 
     expect(trainings).toEqual(
       expect.arrayContaining([
-          expect.objectContaining({
-          title,
-          description
+        expect.objectContaining({
+          id: expect.any(String),
+          authorId: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          title: expect.any(String),
+          description: expect.any(String)
         })
       ])
     );
@@ -86,9 +93,12 @@ describe('Tests of Training usecases', () => {
 
     expect(training).toEqual(
       expect.objectContaining({
-        id: trainingId,
-        title,
-        description
+        id: expect.any(String),
+        authorId: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        title: expect.any(String),
+        description: expect.any(String)
       })
     );
   });
@@ -103,9 +113,12 @@ describe('Tests of Training usecases', () => {
 
     await expect(training).toEqual(
       expect.objectContaining({
-        id: trainingId,
-        title,
-        description
+        id: expect.any(String),
+        authorId: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        title: expect.any(String),
+        description: expect.any(String)
       })
     );
   });

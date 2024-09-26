@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from "@infrastructure/prisma/prisma.service";
-import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { TrainingsPrismaRepository } from '@infrastructure/prisma/trainings.prisma.repository';
-import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
+import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
 import { AuthModule } from '@infrastructure/controllers/auth/auth.module';
 import { PrismaModule } from '@infrastructure/prisma/prisma.module';
+import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
 
 @Module({
   imports: [

@@ -1,7 +1,7 @@
-import { beforeAll, describe, expect, test, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TrainingsController } from '@infrastructure/controllers/trainings/trainings.controller';
-import { TrainingsUsecase } from '@domain/usecases/trainings.usecase';
+import { TrainingsUsecase } from '@usecases/trainings/trainings.usecase';
 import { trainingsFakeData } from '@tests/fixtures/trainings.fakedata';
 import { PassportModule } from '@nestjs/passport';
 import { userMock } from '@tests/mocks/mocks';
@@ -38,13 +38,12 @@ describe('Tests of Training usecases', () => {
     trainingsUsecaseSpy = app.get<TrainingsUsecase>(TrainingsUsecase);
   })
 
-  test('TrainingsController - calling getTrainings method', async () => {
+  test('TrainingsController calling getTrainings method', async () => {
     //Arrange
     const mockFilterDto = { search: "" };
 
-    //Act
+    //Act & Assert
     trainingsController.getTrainings(mockFilterDto, userMock);
-    //Assert
     expect(trainingsUsecaseSpy.getTrainings).toHaveBeenCalled();
   });
 
@@ -52,9 +51,8 @@ describe('Tests of Training usecases', () => {
     //Arrange
     const trainingId = trainingsFakeData[0].id
 
-    //Act
+    //Act & Assert
     trainingsController.getTrainingById(trainingId, userMock);
-    //Assert
     expect(trainingsUsecaseSpy.getTrainingById).toHaveBeenCalledWith(trainingId, userMock);
   });
 
@@ -65,9 +63,8 @@ describe('Tests of Training usecases', () => {
       description: faker.string.alphanumeric()
     };
 
-    //Act
+    //Act & Assert
     trainingsController.createTraining(training, userMock);
-    //Assert
     expect(trainingsUsecaseSpy.createTraining).toHaveBeenCalledWith(training, userMock);
   });
 
@@ -75,9 +72,8 @@ describe('Tests of Training usecases', () => {
     //Arrange
     const trainingId = trainingsFakeData[0].id
 
-    //Act
+    //Act & Assert
     trainingsController.deleteTraining(trainingId, userMock);
-    //Assert
     expect(trainingsUsecaseSpy.deleteTraining).toHaveBeenCalledWith(trainingId, userMock);
   });
 
@@ -89,10 +85,8 @@ describe('Tests of Training usecases', () => {
       description: faker.string.alphanumeric()
     };
 
-    //Act
+    //Act & Assert
     trainingsController.updateTraining(training, trainingId, userMock);
-
-    //Assert
     expect(trainingsUsecaseSpy.updateTraining).toHaveBeenCalledWith(training, trainingId, userMock);
   });
 });

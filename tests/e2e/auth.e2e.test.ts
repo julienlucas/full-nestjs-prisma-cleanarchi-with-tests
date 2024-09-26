@@ -23,20 +23,23 @@ describe('Tests of Training usecases', () => {
   });
 
   test('/auth/signup should create a new user', async () => {
+    const email = emailMock;
+    const password = passwordMock;
     const result = await request(app.getHttpServer())
       .post('/auth/signup')
-      .send({ email: emailMock, password: passwordMock })
+      .send({ email, password })
       .expect(201);
 
     const userCreated = JSON.parse(result.text);
 
-    expect(userCreated).toEqual(expect.objectContaining({ email: emailMock }));
+    expect(userCreated).toEqual(expect.objectContaining({ email }));
   });
 
   test('/auth/signin should return the right hashed token', async () => {
+    const { email, password } = userMock;
     const result = await request(app.getHttpServer())
       .post('/auth/signin')
-      .send({ email: userMock.email, password: userMock.password })
+      .send({ email, password })
       .expect(201);
 
     const expectedHash = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'

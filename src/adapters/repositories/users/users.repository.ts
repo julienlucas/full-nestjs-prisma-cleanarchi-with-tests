@@ -1,4 +1,4 @@
-import { AuthCrendentialsDto } from '@infrastructure/repositories/users/users.dto';
+import { AuthCrendentialsDto } from '@adapters/repositories/users/users.dto';
 import { User } from '@domain/models/user.interface';
 
 export abstract class UsersRepository {

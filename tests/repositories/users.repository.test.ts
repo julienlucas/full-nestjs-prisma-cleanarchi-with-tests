@@ -1,10 +1,10 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
-import { UsersRepository } from '@infrastructure/repositories/users/users.repository';
+import { UsersRepository } from '@adapters/repositories/users/users.repository';
 import { UsersPrismaRepository } from "@infrastructure/prisma/users.prisma.repository";
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
-import { AuthUsecase } from '@domain/usecases/auth.usecase';
+import { AuthUsecase } from '@usecases/users/users.usecase';
 import { userMock } from '@tests/mocks/mocks';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';

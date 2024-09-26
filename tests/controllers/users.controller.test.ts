@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from '@infrastructure/controllers/auth/auth.controller';
-import { AuthUsecase } from '@domain/usecases/auth.usecase';
+import { AuthUsecase } from '@usecases/users/users.usecase';
 import { faker } from '@faker-js/faker';
 
 describe('Tests of Training usecases', () => {
@@ -33,10 +33,8 @@ describe('Tests of Training usecases', () => {
     const email = faker.string.alphanumeric(10);
     const password = faker.string.alphanumeric(10);
 
-    //Act
+    //Act & Assert
     authController.signUp({ email, password });
-
-    //Assert
     expect(authUsecaseSpy.signUp).toHaveBeenCalled();
   });
 
@@ -45,10 +43,8 @@ describe('Tests of Training usecases', () => {
     const email = faker.string.alphanumeric(10);
     const password = faker.string.alphanumeric(10);
 
-    //Act
+    //Act & Assert
     authController.signIn({ email, password });
-
-    //Assert
     expect(authUsecaseSpy.signIn).toHaveBeenCalled();
   });
 });
