@@ -1,13 +1,13 @@
 import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { TrainingDto, GetTrainingsFilterDto } from '@usecases/trainings/trainings.dto';
-import { TrainingsRepositoryAdapter } from '@adapters/repositories/trainings.repository';
+import { TrainingsRepository } from '@adapters/repositories/trainings.repository';
 import { TrainingEntity } from '@domain/entities/training.entity';
 import { Training } from '@domain/models/training.interface';
 import { User } from '@domain/models/user.interface';
 import { Logger } from '@nestjs/common';
 
 @Injectable()
-export class TrainingsPrismaRepository implements TrainingsRepositoryAdapter {
+export class TrainingsPrismaRepository implements TrainingsRepository {
   private logger = new Logger('TrainingsRepository', { timestamp: true });
 
   constructor(

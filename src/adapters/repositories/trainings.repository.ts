@@ -2,7 +2,7 @@ import { TrainingDto, GetTrainingsFilterDto } from '@usecases/trainings/training
 import { Training } from '@domain/models/training.interface';
 import { User } from '@domain/models/user.interface';
 
-export abstract class TrainingsRepositoryAdapter {
+export abstract class TrainingsRepository {
   abstract getTrainings(filterDto: GetTrainingsFilterDto, user: User): Promise<Training[]>;
   abstract getTrainingById(trainingId: string): Promise<Training>;
   abstract createTraining(training: TrainingDto, user: User): Promise<Training>;
