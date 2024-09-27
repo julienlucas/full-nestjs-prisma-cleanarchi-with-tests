@@ -37,15 +37,17 @@ Le Swagger est disponible à : http://localhost:3000/api-docs
 
 ```
 src
+├── Adapters (Interface Adapters)
+│   └── Controllers (connexion aux API's, BDD's)
+│   └── Repositories (Abstract class pour Prisma - le vrai repository)
+│   └── Presenters (adapters sortie de la data des use cases)
 ├── Domain
 │   ├── Entities (règles métier)
 │   ├── Models (data models TypeScript)
 └── Infrastructure
 │   └── Common (utils communs)
 │   └── Controllers (définition des endpoints et actions / swagger )
-│   └── Repositories (connexion aux API's, BDD's)
-│   └── Presenters (adapters sortie de la data des use cases)
-│   └── Prisma (ORM)
+│   └── Prisma (ORM - les repositories)
 └── Use cases (actions/logique métier)
 
 ```
