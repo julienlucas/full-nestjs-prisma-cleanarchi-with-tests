@@ -18,8 +18,8 @@ describe('Tests of Training usecases', () => {
     await app.init();
   });
 
-  afterAll(async () => {
-    await app.close();
+  afterAll(() => {
+    app.close();
   });
 
   test('/auth/signup should create a new user', async () => {

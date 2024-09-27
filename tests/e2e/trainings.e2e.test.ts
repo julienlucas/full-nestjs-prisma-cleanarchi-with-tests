@@ -24,8 +24,8 @@ describe('Tests of Training usecases', () => {
     await app.init();
   });
 
-  afterAll(async () => {
-    await app.close();
+  afterAll(() => {
+    app.close();
   });
 
   test('/trainings POST should create and return a training', async () => {
