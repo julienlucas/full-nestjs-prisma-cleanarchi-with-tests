@@ -1,4 +1,7 @@
 name: End-to-end & units tests
+env:
+  DATABASE_URL: ***REMOVED***
+  DIRECT_URL: ***REMOVED***
 
 on:
   deployment_status:
