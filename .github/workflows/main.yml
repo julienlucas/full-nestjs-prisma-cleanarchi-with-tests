@@ -1,10 +1,13 @@
-name: End-to-end & units tests
+env:
+  DATABASE_URL: ***REMOVED***
+  DIRECT_URL: ***REMOVED***
 
 on:
   deployment_status:
 jobs:
   tests:
     name: e2e & units tests
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: pnpm/action-setup@v4
