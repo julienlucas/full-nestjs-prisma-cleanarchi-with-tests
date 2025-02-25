@@ -68,10 +68,17 @@ export class TrainingsController implements TrainingsControllerAdapter {
     try {
       const training = await this.TrainingsUsecase.getTrainingById(id, user);
 
+      if (training.authorId !== user.id) {
+        const message = `Training with ID "${id}" not found.`;
+
+        this.logger.error(message, "code_error: 404");
+        throw new NotFoundException({ message, code_error: 404 });
+      }
+
       if (!training) {
         const message = `Training with ID "${id}" not found.`;
 
-        this.logger.error(message, 'code_error: 404');
+        this.logger.error(message, "code_error: 404");
         throw new NotFoundException({ message, code_error: 404 });
       }
 

@@ -1,3 +1,6 @@
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" UUID NOT NULL,

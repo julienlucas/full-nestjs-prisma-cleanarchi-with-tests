@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
@@ -24,6 +25,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
+  fs.writeFileSync("./api-spec.json", JSON.stringify(document));
   SwaggerModule.setup('api-docs', app, document);
 
   app.enableCors();
