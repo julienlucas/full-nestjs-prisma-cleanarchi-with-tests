@@ -1,0 +1,37 @@
+# Réglages pnpm.
+#
+# Le champ "pnpm" de package.json n'est plus lu depuis pnpm 12 : les réglages
+# vivent ici (https://pnpm.io/settings). Le format a lui aussi changé, d'où les
+# deux écritures ci-dessous — les listes pour pnpm 10/11, la map pour pnpm 12+.
+#
+# Sans ces déclarations, `pnpm install` échoue en CI sur ERR_PNPM_IGNORED_BUILDS :
+# pnpm refuse d'exécuter des build scripts non approuvés. bcrypt et le client
+# Prisma en ont besoin, sinon les tests plantent à l'import.
+
+# --- pnpm 10 / 11 ---
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@prisma/client'
+  - '@prisma/engines'
+  - '@swc/core'
+  - bcrypt
+  - esbuild
+  - prisma
+
+# msw n'affiche qu'un message post-install, nice-napi est un binding natif
+# optionnel de @swc/core : inutiles ici, mais à déclarer pour éviter l'erreur.
+ignoredBuiltDependencies:
+  - msw
+  - nice-napi
+
+# --- pnpm 12+ ---
+allowBuilds:
+  '@nestjs/core': true
+  '@prisma/client': true
+  '@prisma/engines': true
+  '@swc/core': true
+  bcrypt: true
+  esbuild: true
+  prisma: true
+  msw: false
+  nice-napi: false
