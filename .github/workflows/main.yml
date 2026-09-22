@@ -1,7 +1,7 @@
 name: End-to-end & units tests
 env:
-  DATABASE_URL: ***REMOVED***
-  DIRECT_URL: ***REMOVED***
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DIRECT_URL: ${{ secrets.DIRECT_URL }}
 
 on:
   deployment_status:
