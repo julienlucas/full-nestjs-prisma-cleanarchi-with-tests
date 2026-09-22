@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm prisma generate && pnpm build && mkdir -p public",
+  "buildCommand": "pnpm prisma generate && pnpm build && mkdir -p public && echo 'User-agent: *' > public/robots.txt && echo 'Disallow: /' >> public/robots.txt",
   "outputDirectory": "public",
   "functions": {
     "api/index.js": {
@@ -7,6 +7,9 @@
     }
   },
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api" }
+    {
+      "source": "/(.*)",
+      "destination": "/api"
+    }
   ]
 }
