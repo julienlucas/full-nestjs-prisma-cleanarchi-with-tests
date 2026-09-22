@@ -35,7 +35,21 @@ async function bootstrap() {
 
   // Pas de fs.writeFileSync de api-spec.json ici : le filesystem est en lecture
   // seule en serverless (ce fichier est généré par le dev local).
-  SwaggerModule.setup('api-docs', app, SwaggerModule.createDocument(app, options));
+  //
+  // Les assets de Swagger UI sont chargés depuis un CDN : servis normalement
+  // depuis node_modules/swagger-ui-dist, ils sont résolus au runtime et donc
+  // invisibles au tracing de fichiers de Vercel. Ils n'étaient pas embarqués
+  // dans le bundle de la fonction, swagger-ui-bundle.js et swagger-ui.css
+  // partaient en 404 et la page restait blanche. Version alignée sur celle
+  // qu'embarque @nestjs/swagger.
+  const swaggerUi = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14';
+  SwaggerModule.setup('api-docs', app, SwaggerModule.createDocument(app, options), {
+    customCssUrl: `${swaggerUi}/swagger-ui.css`,
+    customJs: [
+      `${swaggerUi}/swagger-ui-bundle.js`,
+      `${swaggerUi}/swagger-ui-standalone-preset.js`,
+    ],
+  });
 
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
