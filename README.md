@@ -109,7 +109,22 @@ $ pnpm run test:cov
 ```
 
 ## Swagger
-Le Swagger est disponible à : http://localhost:3000/api-docs
+
+| Environnement | URL |
+| --- | --- |
+| Local (`pnpm run start:dev`) | http://localhost:3000/api-docs |
+| Production (Vercel) | https://nestjs-cleanarchi.vercel.app/api-docs |
+
+La spécification OpenAPI brute est servie sur le même chemin suffixé `-json`
+(`/api-docs-json` en local comme en production) : pratique pour l'importer dans
+Postman ou Insomnia, ou pour vérifier l'API sans l'interface.
+
+> **Assets en production** — l'interface charge `swagger-ui-bundle.js` et
+> `swagger-ui.css` depuis jsdelivr (voir `src/serverless.ts`). Ces fichiers
+> viennent de `node_modules/swagger-ui-dist` et sont résolus au runtime par
+> `@nestjs/swagger` : Vercel ne les embarque donc pas dans le bundle de la
+> fonction, ils partaient en 404 et la page restait blanche. En local,
+> `src/main.ts` les sert normalement depuis `node_modules`.
 
 ```
 src
