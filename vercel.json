@@ -1,5 +1,6 @@
 {
-  "buildCommand": "pnpm prisma generate && pnpm build",
+  "buildCommand": "pnpm prisma generate && pnpm build && mkdir -p public",
+  "outputDirectory": "public",
   "functions": {
     "api/index.js": {
       "includeFiles": "dist/**"
