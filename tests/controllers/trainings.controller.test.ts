@@ -60,7 +60,12 @@ describe('Tests of Training usecases', () => {
     const trainingId = trainingsFakeData[0].id
 
     //Act & Assert
-    trainingsController.getTrainingById(trainingId, userMock);
+    // Le mock renvoie [], donc training.authorId !== user.id et le contrôleur
+    // rejette : on attend le rejet explicitement pour ne pas laisser une
+    // promesse non gérée faire sortir vitest en erreur.
+    await expect(
+      trainingsController.getTrainingById(trainingId, userMock)
+    ).rejects.toThrow();
     expect(trainingsUsecaseSpy.getTrainingById).toHaveBeenCalledWith(trainingId, userMock);
   });
 

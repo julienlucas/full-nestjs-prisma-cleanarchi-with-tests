@@ -1,7 +1,8 @@
 name: Tests
 env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  DIRECT_URL: ${{ secrets.DIRECT_URL }}
+  # Les tests unitaires mockent Prisma : aucune base de données n'est requise.
+  # Seul JWT_SECRET est nécessaire (signature d'un token dans users.usecase.test.ts).
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
 on:
   deployment_status:
@@ -20,4 +21,5 @@ jobs:
           node-version: '20.x'
           cache: 'pnpm'
       - run: pnpm install
+      - run: pnpm prisma generate
       - run: pnpm test
