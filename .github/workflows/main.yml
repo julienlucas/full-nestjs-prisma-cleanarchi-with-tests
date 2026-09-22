@@ -6,20 +6,38 @@ env:
 
 on:
   deployment_status:
+  workflow_dispatch:
+
 jobs:
   tests:
-    name: e2e & units tests
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    name: units tests
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success')
     runs-on: ubuntu-latest
     steps:
-      - uses: pnpm/action-setup@v4
-        with:
-          version: latest
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+
+      - uses: pnpm/action-setup@v4
+        # Pas de `version:` ici : pnpm/action-setup lit le champ packageManager
+        # de package.json, ce qui garde la CI alignée sur le poste de dev.
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          cache: 'pnpm'
+          node-version: '24'
+        # Pas de `cache: 'pnpm'` : il résout le chemin du store avant que pnpm
+        # ne bascule sur la version de packageManager, et cache un chemin qui
+        # n'existe pas. Le cache est géré explicitement ci-dessous.
+
+      - name: Résoudre le chemin du store pnpm
+        shell: bash
+        run: echo "PNPM_STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_ENV"
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - run: pnpm install
       - run: pnpm prisma generate
       - run: pnpm test
