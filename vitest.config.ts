@@ -1,10 +1,14 @@
 import swc from 'unplugin-swc';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, configDefaults } from 'vitest/config';
 import path from 'path';
 
 export default defineConfig({
   test: {
     include: ["**/*.test.ts", "**/*.e2e-test.ts"],
+    // Tests e2e désactivés : ils bootent le vrai AppModule et écrivent dans la
+    // base Supabase. Retirer cette ligne pour les réactiver (nécessite
+    // DATABASE_URL, DIRECT_URL, STAGE, JWT_SECRET + une base seedée).
+    exclude: [...configDefaults.exclude, "**/*.e2e.test.ts"],
     globals: true,
     alias: {
       "@src": path.resolve(__dirname, "src"),

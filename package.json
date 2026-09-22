@@ -57,5 +57,15 @@
   },
   "prisma": {
     "schema": "src/infrastructure/prisma/schema.prisma"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@prisma/client",
+      "@swc/core",
+      "bcrypt",
+      "esbuild",
+      "prisma"
+    ]
   }
 }
